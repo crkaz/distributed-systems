@@ -637,11 +637,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Zak\\source\\repos\\SignalRClient\\SignalRClient.csproj",
+      "projectUniqueName": "D:\\repos\\Distributed Systems\\Lab 2\\SignalRClient\\SignalRClient.csproj",
       "projectName": "SignalRClient",
-      "projectPath": "C:\\Users\\Zak\\source\\repos\\SignalRClient\\SignalRClient.csproj",
+      "projectPath": "D:\\repos\\Distributed Systems\\Lab 2\\SignalRClient\\SignalRClient.csproj",
       "packagesPath": "C:\\Users\\Zak\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Zak\\source\\repos\\SignalRClient\\obj\\",
+      "outputPath": "D:\\repos\\Distributed Systems\\Lab 2\\SignalRClient\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

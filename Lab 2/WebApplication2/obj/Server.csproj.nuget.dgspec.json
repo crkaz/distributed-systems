@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\repos\\Distributed Systems\\Lab 2\\SignalRClient\\SignalRClient.csproj": {}
+    "D:\\repos\\Distributed Systems\\Lab 2\\WebApplication2\\Server.csproj": {}
   },
   "projects": {
-    "D:\\repos\\Distributed Systems\\Lab 2\\SignalRClient\\SignalRClient.csproj": {
+    "D:\\repos\\Distributed Systems\\Lab 2\\WebApplication2\\Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\repos\\Distributed Systems\\Lab 2\\SignalRClient\\SignalRClient.csproj",
-        "projectName": "SignalRClient",
-        "projectPath": "D:\\repos\\Distributed Systems\\Lab 2\\SignalRClient\\SignalRClient.csproj",
+        "projectUniqueName": "D:\\repos\\Distributed Systems\\Lab 2\\WebApplication2\\Server.csproj",
+        "projectName": "Server",
+        "projectPath": "D:\\repos\\Distributed Systems\\Lab 2\\WebApplication2\\Server.csproj",
         "packagesPath": "C:\\Users\\Zak\\.nuget\\packages\\",
-        "outputPath": "D:\\repos\\Distributed Systems\\Lab 2\\SignalRClient\\obj\\",
+        "outputPath": "D:\\repos\\Distributed Systems\\Lab 2\\WebApplication2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -21,14 +21,14 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "netcoreapp2.2"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
+          "netcoreapp2.2": {
             "projectReferences": {}
           }
         },
@@ -39,19 +39,24 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
+        "netcoreapp2.2": {
           "dependencies": {
-            "Microsoft.AspNet.SignalR.Client": {
+            "Microsoft.AspNetCore.App": {
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[2.4.1, )"
+              "version": "[2.2.0, )",
+              "autoReferenced": true
             },
-            "Microsoft.AspNetCore.SignalR.Client": {
+            "Microsoft.AspNetCore.Razor.Design": {
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[2.2.0, )"
             },
-            "Microsoft.AspNetCore.SignalR.Client.Core": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[2.2.0, )",
+              "autoReferenced": true
             }
           },
           "imports": [
@@ -64,14 +69,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            },
-            "Microsoft.WindowsDesktop.App.WPF": {
-              "privateAssets": "none"
-            }
-          },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }

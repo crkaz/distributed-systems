@@ -12163,11 +12163,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Zak\\source\\repos\\WebApplication2\\WebApplication2.csproj",
-      "projectName": "WebApplication2",
-      "projectPath": "C:\\Users\\Zak\\source\\repos\\WebApplication2\\WebApplication2.csproj",
+      "projectUniqueName": "D:\\repos\\Distributed Systems\\Lab 2\\WebApplication2\\Server.csproj",
+      "projectName": "Server",
+      "projectPath": "D:\\repos\\Distributed Systems\\Lab 2\\WebApplication2\\Server.csproj",
       "packagesPath": "C:\\Users\\Zak\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Zak\\source\\repos\\WebApplication2\\obj\\",
+      "outputPath": "D:\\repos\\Distributed Systems\\Lab 2\\WebApplication2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
