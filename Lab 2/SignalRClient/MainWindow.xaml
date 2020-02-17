@@ -21,10 +21,10 @@
 
         <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Message}"></TextBox>
 
-        <Button Grid.Column="0" Grid.Row="2" Click="Connect">Connect</Button>
+        <Button Grid.Column="0" Grid.Row="2" Click="ToggleConnection" Content="{Binding ConnectButtonText, UpdateSourceTrigger=PropertyChanged}"></Button>
         <Button Grid.Column="1" Grid.Row="2" Click="SendMessage">Send</Button>
 
-        <ListBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding Messages}">
+        <ListBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding Messages, UpdateSourceTrigger=PropertyChanged}">
         </ListBox>
     </Grid>
 </Window>

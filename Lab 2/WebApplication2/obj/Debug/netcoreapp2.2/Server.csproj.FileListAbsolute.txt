@@ -21,7 +21,6 @@ D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\Serve
 D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\Server.pdb
 D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\Server.Views.dll
 D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\Server.Views.pdb
-D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Server.csprojAssemblyReference.cache
 D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Server.RazorAssemblyInfo.cache
 D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Server.RazorAssemblyInfo.cs
 D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Server.AssemblyInfoInputs.cache
@@ -43,3 +42,4 @@ D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Serve
 D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Server.dll
 D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Server.pdb
 D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Server.csproj.CopyComplete
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Server.csprojAssemblyReference.cache
