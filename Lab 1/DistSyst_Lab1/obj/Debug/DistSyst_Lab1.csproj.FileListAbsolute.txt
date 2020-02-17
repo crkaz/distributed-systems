@@ -1,9 +1,0 @@
-C:\Users\Zak\source\repos\DistSyst_Lab1\bin\Debug\DistSyst_Lab1.exe.config
-C:\Users\Zak\source\repos\DistSyst_Lab1\bin\Debug\DistSyst_Lab1.exe
-C:\Users\Zak\source\repos\DistSyst_Lab1\bin\Debug\DistSyst_Lab1.pdb
-C:\Users\Zak\source\repos\DistSyst_Lab1\bin\Debug\TranslationInterface.dll
-C:\Users\Zak\source\repos\DistSyst_Lab1\bin\Debug\TranslationInterface.pdb
-C:\Users\Zak\source\repos\DistSyst_Lab1\obj\Debug\DistSyst_Lab1.csprojAssemblyReference.cache
-C:\Users\Zak\source\repos\DistSyst_Lab1\obj\Debug\DistSyst_Lab1.csproj.CopyComplete
-C:\Users\Zak\source\repos\DistSyst_Lab1\obj\Debug\DistSyst_Lab1.exe
-C:\Users\Zak\source\repos\DistSyst_Lab1\obj\Debug\DistSyst_Lab1.pdb

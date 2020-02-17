@@ -1,0 +1,13 @@
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\appsettings.Development.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\Server.deps.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\Server.runtimeconfig.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\Server.runtimeconfig.dev.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\Server.dll
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\Server.pdb
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Server.csprojAssemblyReference.cache
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Server.AssemblyInfoInputs.cache
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Server.AssemblyInfo.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Server.dll
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Server.pdb
