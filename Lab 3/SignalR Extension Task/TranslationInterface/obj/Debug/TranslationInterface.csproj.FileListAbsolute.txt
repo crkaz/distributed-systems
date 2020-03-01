@@ -1,4 +1,0 @@
-C:\Users\Zak\source\repos\TranslationInterface\bin\Debug\TranslationInterface.dll
-C:\Users\Zak\source\repos\TranslationInterface\bin\Debug\TranslationInterface.pdb
-C:\Users\Zak\source\repos\TranslationInterface\obj\Debug\TranslationInterface.dll
-C:\Users\Zak\source\repos\TranslationInterface\obj\Debug\TranslationInterface.pdb
