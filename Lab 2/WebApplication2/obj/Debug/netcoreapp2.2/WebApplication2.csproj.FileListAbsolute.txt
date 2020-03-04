@@ -1,0 +1,64 @@
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\appsettings.Development.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.deps.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.runtimeconfig.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.runtimeconfig.dev.json
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.dll
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.pdb
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.Views.dll
+C:\Users\Zak\source\repos\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.Views.pdb
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.csprojAssemblyReference.cache
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorAssemblyInfo.cache
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorAssemblyInfo.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.AssemblyInfoInputs.cache
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.AssemblyInfo.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.TagHelpers.input.cache
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.TagHelpers.output.cache
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorCoreGenerate.cache
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Error.cshtml.g.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Index.cshtml.g.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Privacy.cshtml.g.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Shared\_CookieConsentPartial.cshtml.g.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Shared\_Layout.cshtml.g.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Shared\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\_ViewImports.cshtml.g.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\_ViewStart.cshtml.g.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorTargetAssemblyInfo.cache
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorTargetAssemblyInfo.cs
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.Views.pdb
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.dll
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.pdb
+C:\Users\Zak\source\repos\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.csproj.CopyComplete
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\appsettings.Development.json
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\appsettings.json
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.deps.json
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.runtimeconfig.json
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.runtimeconfig.dev.json
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.dll
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.pdb
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.Views.dll
+D:\repos\Distributed Systems\Lab 2\WebApplication2\bin\Debug\netcoreapp2.2\WebApplication2.Views.pdb
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.csprojAssemblyReference.cache
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorAssemblyInfo.cache
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorAssemblyInfo.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.AssemblyInfoInputs.cache
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.AssemblyInfo.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.TagHelpers.input.cache
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.TagHelpers.output.cache
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorCoreGenerate.cache
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Error.cshtml.g.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Index.cshtml.g.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Privacy.cshtml.g.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Shared\_CookieConsentPartial.cshtml.g.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Shared\_Layout.cshtml.g.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\Shared\_ValidationScriptsPartial.cshtml.g.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\_ViewImports.cshtml.g.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\Razor\Pages\_ViewStart.cshtml.g.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorTargetAssemblyInfo.cache
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.RazorTargetAssemblyInfo.cs
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.Views.pdb
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.dll
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.pdb
+D:\repos\Distributed Systems\Lab 2\WebApplication2\obj\Debug\netcoreapp2.2\WebApplication2.csproj.CopyComplete
