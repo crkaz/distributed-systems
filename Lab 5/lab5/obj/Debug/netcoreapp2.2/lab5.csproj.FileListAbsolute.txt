@@ -1,0 +1,16 @@
+D:\repos\Distributed Systems\Lab 5\lab5\bin\Debug\netcoreapp2.2\appsettings.Development.json
+D:\repos\Distributed Systems\Lab 5\lab5\bin\Debug\netcoreapp2.2\appsettings.json
+D:\repos\Distributed Systems\Lab 5\lab5\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+D:\repos\Distributed Systems\Lab 5\lab5\bin\Debug\netcoreapp2.2\lab5.deps.json
+D:\repos\Distributed Systems\Lab 5\lab5\bin\Debug\netcoreapp2.2\lab5.runtimeconfig.json
+D:\repos\Distributed Systems\Lab 5\lab5\bin\Debug\netcoreapp2.2\lab5.runtimeconfig.dev.json
+D:\repos\Distributed Systems\Lab 5\lab5\bin\Debug\netcoreapp2.2\lab5.dll
+D:\repos\Distributed Systems\Lab 5\lab5\obj\Debug\netcoreapp2.2\lab5.csprojAssemblyReference.cache
+D:\repos\Distributed Systems\Lab 5\lab5\obj\Debug\netcoreapp2.2\lab5.RazorAssemblyInfo.cache
+D:\repos\Distributed Systems\Lab 5\lab5\obj\Debug\netcoreapp2.2\lab5.RazorAssemblyInfo.cs
+D:\repos\Distributed Systems\Lab 5\lab5\obj\Debug\netcoreapp2.2\lab5.AssemblyInfoInputs.cache
+D:\repos\Distributed Systems\Lab 5\lab5\obj\Debug\netcoreapp2.2\lab5.AssemblyInfo.cs
+D:\repos\Distributed Systems\Lab 5\lab5\obj\Debug\netcoreapp2.2\lab5.RazorTargetAssemblyInfo.cache
+D:\repos\Distributed Systems\Lab 5\lab5\bin\Debug\netcoreapp2.2\lab5.pdb
+D:\repos\Distributed Systems\Lab 5\lab5\obj\Debug\netcoreapp2.2\lab5.dll
+D:\repos\Distributed Systems\Lab 5\lab5\obj\Debug\netcoreapp2.2\lab5.pdb
