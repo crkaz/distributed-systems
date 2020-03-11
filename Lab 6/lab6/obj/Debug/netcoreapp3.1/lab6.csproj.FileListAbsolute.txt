@@ -1,0 +1,11 @@
+D:\repos\Distributed Systems\Lab 6\lab6\bin\Debug\netcoreapp3.1\lab6.exe
+D:\repos\Distributed Systems\Lab 6\lab6\bin\Debug\netcoreapp3.1\lab6.deps.json
+D:\repos\Distributed Systems\Lab 6\lab6\bin\Debug\netcoreapp3.1\lab6.runtimeconfig.json
+D:\repos\Distributed Systems\Lab 6\lab6\bin\Debug\netcoreapp3.1\lab6.runtimeconfig.dev.json
+D:\repos\Distributed Systems\Lab 6\lab6\bin\Debug\netcoreapp3.1\lab6.dll
+D:\repos\Distributed Systems\Lab 6\lab6\bin\Debug\netcoreapp3.1\lab6.pdb
+D:\repos\Distributed Systems\Lab 6\lab6\obj\Debug\netcoreapp3.1\lab6.csprojAssemblyReference.cache
+D:\repos\Distributed Systems\Lab 6\lab6\obj\Debug\netcoreapp3.1\lab6.AssemblyInfoInputs.cache
+D:\repos\Distributed Systems\Lab 6\lab6\obj\Debug\netcoreapp3.1\lab6.AssemblyInfo.cs
+D:\repos\Distributed Systems\Lab 6\lab6\obj\Debug\netcoreapp3.1\lab6.dll
+D:\repos\Distributed Systems\Lab 6\lab6\obj\Debug\netcoreapp3.1\lab6.pdb
