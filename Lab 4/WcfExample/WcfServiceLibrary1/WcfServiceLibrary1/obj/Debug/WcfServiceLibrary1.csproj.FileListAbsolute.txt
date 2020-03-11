@@ -1,0 +1,27 @@
+Y:\Documents\Box Sync\Projects\WCF\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll.config
+Y:\Documents\Box Sync\Projects\WCF\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll
+Y:\Documents\Box Sync\Projects\WCF\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.pdb
+Y:\Documents\Box Sync\Projects\WCF\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.csprojResolveAssemblyReference.cache
+Y:\Documents\Box Sync\Projects\WCF\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.dll
+Y:\Documents\Box Sync\Projects\WCF\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.pdb
+E:\Files\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll.config
+E:\Files\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll
+E:\Files\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.pdb
+E:\Files\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.csprojResolveAssemblyReference.cache
+E:\Files\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.csproj.CoreCompileInputs.cache
+E:\Files\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.dll
+E:\Files\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.pdb
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll.config
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.pdb
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.csprojResolveAssemblyReference.cache
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.csproj.CoreCompileInputs.cache
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.dll
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.pdb
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll.config
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.pdb
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.csprojAssemblyReference.cache
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.csproj.CoreCompileInputs.cache
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.dll
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.pdb

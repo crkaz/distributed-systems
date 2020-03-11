@@ -1,0 +1,16 @@
+Y:\Documents\Box Sync\Projects\WCF\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.exe
+Y:\Documents\Box Sync\Projects\WCF\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.pdb
+E:\Files\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApp2.csproj.CoreCompileInputs.cache
+E:\Files\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.exe
+E:\Files\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.pdb
+C:\Temp\EXES\ConsoleApplication2.exe.config
+C:\Temp\EXES\ConsoleApplication2.exe
+C:\Temp\EXES\ConsoleApplication2.pdb
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApp2.csproj.CoreCompileInputs.cache
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.exe
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.pdb
+D:\Box Sync\Lecturing\DistributedSystems\Lectures\WCF DEMO\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApp2.csprojResolveAssemblyReference.cache
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApp2.csprojAssemblyReference.cache
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApp2.csproj.CoreCompileInputs.cache
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.exe
+D:\Box Sync\Lecturing\DistributedSystems\1819\Lectures\WCF DEMO\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.pdb

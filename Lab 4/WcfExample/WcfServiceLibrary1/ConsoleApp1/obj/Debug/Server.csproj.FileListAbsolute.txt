@@ -1,0 +1,7 @@
+C:\Temp\EXES\ConsoleApp1.exe.config
+C:\Temp\EXES\ConsoleApp1.exe
+C:\Temp\EXES\ConsoleApp1.pdb
+C:\Users\Zak\Downloads\WcfExample\WcfServiceLibrary1\ConsoleApp1\obj\Debug\Server.csprojAssemblyReference.cache
+C:\Users\Zak\Downloads\WcfExample\WcfServiceLibrary1\ConsoleApp1\obj\Debug\Server.csproj.CopyComplete
+C:\Users\Zak\Downloads\WcfExample\WcfServiceLibrary1\ConsoleApp1\obj\Debug\ConsoleApp1.exe
+C:\Users\Zak\Downloads\WcfExample\WcfServiceLibrary1\ConsoleApp1\obj\Debug\ConsoleApp1.pdb

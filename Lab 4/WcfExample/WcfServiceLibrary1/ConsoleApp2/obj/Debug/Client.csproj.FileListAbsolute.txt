@@ -1,0 +1,9 @@
+D:\Box Sync\Lecturing\DistributedSystems\1920\Lectures\WCF DEMO\WcfServiceLibraryExample\WcfServiceLibrary1\ConsoleApp2\obj\Debug\Client.csprojAssemblyReference.cache
+D:\Box Sync\Lecturing\DistributedSystems\1920\Lectures\WCF DEMO\WcfServiceLibraryExample\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.exe
+D:\Box Sync\Lecturing\DistributedSystems\1920\Lectures\WCF DEMO\WcfServiceLibraryExample\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.pdb
+C:\Temp\EXES\ConsoleApplication2.exe.config
+C:\Temp\EXES\ConsoleApplication2.exe
+C:\Temp\EXES\ConsoleApplication2.pdb
+C:\Users\Zak\Downloads\WcfExample\WcfServiceLibrary1\ConsoleApp2\obj\Debug\Client.csprojAssemblyReference.cache
+C:\Users\Zak\Downloads\WcfExample\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.exe
+C:\Users\Zak\Downloads\WcfExample\WcfServiceLibrary1\ConsoleApp2\obj\Debug\ConsoleApplication2.pdb
