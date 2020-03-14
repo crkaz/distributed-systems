@@ -1,0 +1,10 @@
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\bin\Debug\netcoreapp2.2\DistSysLab7.deps.json
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\bin\Debug\netcoreapp2.2\DistSysLab7.runtimeconfig.json
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\bin\Debug\netcoreapp2.2\DistSysLab7.runtimeconfig.dev.json
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\bin\Debug\netcoreapp2.2\DistSysLab7.dll
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\bin\Debug\netcoreapp2.2\DistSysLab7.pdb
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\obj\Debug\netcoreapp2.2\DistSysLab7.csprojAssemblyReference.cache
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\obj\Debug\netcoreapp2.2\DistSysLab7.AssemblyInfoInputs.cache
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\obj\Debug\netcoreapp2.2\DistSysLab7.AssemblyInfo.cs
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\obj\Debug\netcoreapp2.2\DistSysLab7.dll
+D:\repos\Distributed Systems\Lab 7\Lab 7 Skeleton Solution\DistSysLab7\obj\Debug\netcoreapp2.2\DistSysLab7.pdb
