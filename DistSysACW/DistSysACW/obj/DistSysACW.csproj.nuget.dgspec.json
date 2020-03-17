@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Box Sync\\Box Sync\\Projects\\DistSys1920Core\\DistSysACW\\DistSysACW\\DistSysACW.csproj": {}
+    "D:\\repos\\Distributed Systems\\DistSysACW\\DistSysACW\\DistSysACW.csproj": {}
   },
   "projects": {
-    "E:\\Box Sync\\Box Sync\\Projects\\DistSys1920Core\\DistSysACW\\DistSysACW\\DistSysACW.csproj": {
+    "D:\\repos\\Distributed Systems\\DistSysACW\\DistSysACW\\DistSysACW.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Box Sync\\Box Sync\\Projects\\DistSys1920Core\\DistSysACW\\DistSysACW\\DistSysACW.csproj",
+        "projectUniqueName": "D:\\repos\\Distributed Systems\\DistSysACW\\DistSysACW\\DistSysACW.csproj",
         "projectName": "DistSysACW",
-        "projectPath": "E:\\Box Sync\\Box Sync\\Projects\\DistSys1920Core\\DistSysACW\\DistSysACW\\DistSysACW.csproj",
-        "packagesPath": "C:\\Users\\461462.ADIR\\.nuget\\packages\\",
-        "outputPath": "E:\\Box Sync\\Box Sync\\Projects\\DistSys1920Core\\DistSysACW\\DistSysACW\\obj\\",
+        "projectPath": "D:\\repos\\Distributed Systems\\DistSysACW\\DistSysACW\\DistSysACW.csproj",
+        "packagesPath": "C:\\Users\\Zak\\.nuget\\packages\\",
+        "outputPath": "D:\\repos\\Distributed Systems\\DistSysACW\\DistSysACW\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\461462.ADIR\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Zak\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -41,10 +41,6 @@
       "frameworks": {
         "netcoreapp2.2": {
           "dependencies": {
-            "EntityFramework": {
-              "target": "Package",
-              "version": "[6.4.0, )"
-            },
             "Microsoft.AspNetCore.App": {
               "suppressParent": "All",
               "target": "Package",
@@ -56,9 +52,19 @@
               "target": "Package",
               "version": "[2.2.0, )"
             },
-            "Microsoft.EntityFrameworkCore.Tools": {
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )"
             },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",
@@ -69,17 +75,19 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[2.2.4, )"
-            },
-            "MySql.Data.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[8.0.19, )"
             }
           },
           "imports": [
-            "net461"
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
           ],
           "assetTargetFallback": true,
-          "warn": true
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
         }
       }
     }
