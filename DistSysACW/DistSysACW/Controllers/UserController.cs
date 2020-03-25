@@ -54,7 +54,6 @@ namespace DistSysACW.Controllers
         //public IActionResult Post([FromBody] JRaw json)
         {
             // localhost:< portnumber >/ api / user / new with “UserOne” in the body of the request
-            Console.WriteLine(json);
             bool jsonIsEmpty = String.IsNullOrWhiteSpace(json.ToString());
             bool usernameExists = UserDatabaseAccess.CheckUsernameExists(json.ToString());
 
@@ -71,7 +70,8 @@ namespace DistSysACW.Controllers
                 #region // If the username is alrady taken, the result should be 
                 // "Oops. This username is already in use. Please try again with a new username." with a status code of FORBIDDEN(403)
                 #endregion
-                return Forbid("Oops. This username is already in use. Please try again with a new username.");
+                //return Forbid();
+                return StatusCode(403, "Oops. This username is already in use. Please try again with a new username.");
             }
             else
             {
@@ -100,12 +100,11 @@ namespace DistSysACW.Controllers
 
             if (usernameMatchesApiKey)
             {
-                //try
-                //{
-                UserDatabaseAccess.DeleteUserByApiKey(apiKey);
-                return true;
-                //}
-                //catch { }
+                bool success = UserDatabaseAccess.DeleteUserByApiKey(apiKey);
+                if (success)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -118,9 +117,33 @@ namespace DistSysACW.Controllers
         {
             // username, role
             string username = (string)json["username"];
-            string role = (string)json["role"];
+            string role = ((string)json["role"]);
 
-            return null;
+            bool roleExists = (role == "Admin" || role == "User");
+            bool usernameExists = UserDatabaseAccess.CheckUsernameExists(username);
+
+            if (usernameExists && roleExists)
+            {
+                //If success: Should return "DONE" in the body of the result, with a status code of OK(200)
+                bool success = UserDatabaseAccess.ChangeRole(username, role);
+                if (success)
+                {
+                    return Ok("DONE");
+                }
+            }
+            else if (!usernameExists)
+            {
+                //If username does not exist: Should return "NOT DONE: Username does not exist" in the body of the result, with a status code of BAD REQUEST(400)
+                return BadRequest("NOT DONE: Username does not exist");
+            }
+            else if (!roleExists)
+            {
+                //If role is not User or Admin: Should return "NOT DONE: Role does not exist" in the body of the result, with a status code of BAD REQUEST(400)
+                return BadRequest("NOT DONE: Role does not exist");
+            }
+
+            //In all other error cases: Should return "NOT DONE: An error occured" in the body of the result, with a status code of BAD REQUEST(400)
+            return BadRequest("NOT DONE: An error occured");
         }
 
     }

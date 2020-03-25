@@ -61,7 +61,6 @@ namespace DistSysACW.Models
             return apiKey;
         }
 
-
         // 2. Check if a user with a given ApiKey string exists in the database, returning true or false.
         public static bool LookupApiKey(string apiKey)
         {
@@ -106,14 +105,13 @@ namespace DistSysACW.Models
                     {
                         return user;
                     }
-
                 }
                 return null;
             }
         }
 
         // 5. Delete a user with a given ApiKey from the database.
-        public static void DeleteUserByApiKey(string apiKey)
+        public static bool DeleteUserByApiKey(string apiKey)
         {
             using (var ctx = new UserContext())
             {
@@ -123,20 +121,23 @@ namespace DistSysACW.Models
                 {
                     if (user.ApiKey == apiKey)
                     {
-                        try
-                        {
-                            userToDelete = user;
-                            break;
-                        }
-                        catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
-                        {
-                            Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
-                        }
+                        userToDelete = user;
+                        break;
                     }
                 }
-                ctx.Users.Remove(userToDelete);
-                ctx.SaveChanges();
+
+                try
+                {
+                    ctx.Users.Remove(userToDelete);
+                    ctx.SaveChanges();
+                    return true;
+                }
+                catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
+                {
+                    Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
+                }
             }
+            return false;
         }
 
         // 6. Etc…
@@ -151,10 +152,37 @@ namespace DistSysACW.Models
                     {
                         return true;
                     }
-
                 }
                 return false;
             }
+        }
+
+        public static bool ChangeRole(string username, string role)
+        {
+            using (var ctx = new UserContext())
+            {
+                User userToChange = null; // Cannot modify collection in foreach.
+                foreach (var user in ctx.Users)
+                {
+                    if (user.UserName == username)
+                    {
+                        userToChange = user;
+                        break;
+                    }
+                }
+
+                try
+                {
+                    userToChange.Role = role;
+                    ctx.SaveChanges();
+                    return true;
+                }
+                catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
+                {
+                    Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
+                }
+            }
+            return false;
         }
         ///.......
         ///
