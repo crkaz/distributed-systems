@@ -17,6 +17,9 @@ namespace DistSysACWClient
         static readonly HttpClient client = new HttpClient();
         const string PORT = "44307";
 
+        private static string ApiKey { get; set; }
+        private static string Username { get; set; }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello. What would you like to do?");
@@ -58,7 +61,7 @@ namespace DistSysACWClient
                         case "Talkback Hello": TalkbackHello(); break;
                         case "Talkback Sort": TalkbackSort(args); break;
                         case "User Get": UserGet(args); break;
-                        case "User Post": UserPost(args);  break;
+                        case "User Post": UserPost(args); break;
                         case "User Set": break;
                         case "User Delete": break;
                         case "User Role": break;
@@ -76,8 +79,8 @@ namespace DistSysACWClient
         {
             try
             {
-                string responseBody = await client.GetStringAsync(endpoint);
-                Console.WriteLine(responseBody);
+                string response = await client.GetStringAsync(endpoint);
+                Console.WriteLine(response);
             }
             catch (HttpRequestException e)
             {
@@ -92,6 +95,17 @@ namespace DistSysACWClient
                 var json = JsonConvert.SerializeObject(body);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(endpoint, data);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Username = body;
+                    ApiKey = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("Got API Key");
+                }
+                else
+                {
+                    Console.WriteLine(response);
+                }
             }
             catch (HttpRequestException e)
             {
