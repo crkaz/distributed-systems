@@ -20,7 +20,7 @@ namespace DistSysACW.Controllers
 
 
         [ActionName("Hello")]
-        public string Get()
+        public IActionResult Get()
         {
             #region TASK1
             // TODO: add api/talkback/hello response
@@ -28,8 +28,7 @@ namespace DistSysACW.Controllers
             // Should return "Hello World" in the body of the result with a status code of OK (200)
             #endregion
 
-            new OkResult(); // Necessary?
-            return "Hello World";
+            return Ok("Hello World");
         }
 
 
