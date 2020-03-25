@@ -34,10 +34,11 @@ namespace DistSysACW.Middleware
                 if (keyExists)
                 {
                     User user = UserDatabaseAccess.GetUserByApiKey(apiKey);
+ 
                     Claim[] claims =
                     {
-                        new Claim("Name", user.UserName),
-                        new Claim("Role", user.Role)
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Role, user.Role)
                     };
 
                     ClaimsIdentity identity = new ClaimsIdentity(claims, "ApiKey");

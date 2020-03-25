@@ -113,10 +113,13 @@ namespace DistSysACW.Controllers
         [HttpPost]
         [ActionName("ChangeRole")]
         [Authorize(Roles = "Admin")]
-        public IActionResult Post([FromHeader] string apiKey, [FromBody] string json)
-        //public IActionResult Post([FromHeader] string apiKey, [FromBody] JObject json)
+        //public IActionResult Post([FromHeader] string apiKey, [FromBody] string json)
+        public IActionResult Post([FromHeader] string apiKey, [FromBody] JObject json)
         {
-            
+            // username, role
+            string username = (string)json["username"];
+            string role = (string)json["role"];
+
             return null;
         }
 
