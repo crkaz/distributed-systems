@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DistSysACW.Models;
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,7 +24,28 @@ namespace DistSysACW.Middleware
             //        Then set the correct roles for the User, using claims
             #endregion
 
-            // Call the next delegate/middleware in the pipeline
+            const string apiKeyHeader = "ApiKey";
+            string apiKey = string.Empty;
+            if (context.Request.Headers.TryGetValue(apiKeyHeader, out var headerValues))
+            {
+                apiKey = headerValues.FirstOrDefault();
+                bool keyExists = UserDatabaseAccess.LookupApiKey(apiKey);
+
+                if (keyExists)
+                {
+                    User user = UserDatabaseAccess.GetUserByApiKey(apiKey);
+                    Claim[] claims =
+                    {
+                        new Claim("Name", user.UserName),
+                        new Claim("Role", user.Role)
+                    };
+
+                    ClaimsIdentity identity = new ClaimsIdentity(claims, "ApiKey");
+                    context.User.AddIdentity(identity);
+                }
+
+            }
+            
             await _next(context);
         }
 

@@ -25,7 +25,6 @@ namespace DistSysACW
                 options.AllowEmptyInputInBodyModelBinding = true;
                 options.Filters.Add(new Filters.AuthFilter());})
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

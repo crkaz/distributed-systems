@@ -20,11 +20,10 @@ namespace DistSysACW.Migrations
 
             modelBuilder.Entity("DistSysACW.Models.User", b =>
                 {
-                    b.Property<int>("ApiKey")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("ApiKey")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Role");
+                    b.Property<string>("Role");
 
                     b.Property<string>("UserName");
 

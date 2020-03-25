@@ -6,7 +6,6 @@ D:\repos\Distributed Systems\DistSysACW\DistSysACW\bin\Debug\netcoreapp2.2\DistS
 D:\repos\Distributed Systems\DistSysACW\DistSysACW\bin\Debug\netcoreapp2.2\DistSysACW.runtimeconfig.dev.json
 D:\repos\Distributed Systems\DistSysACW\DistSysACW\bin\Debug\netcoreapp2.2\DistSysACW.dll
 D:\repos\Distributed Systems\DistSysACW\DistSysACW\bin\Debug\netcoreapp2.2\DistSysACW.pdb
-D:\repos\Distributed Systems\DistSysACW\DistSysACW\obj\Debug\netcoreapp2.2\DistSysACW.csprojAssemblyReference.cache
 D:\repos\Distributed Systems\DistSysACW\DistSysACW\obj\Debug\netcoreapp2.2\DistSysACW.RazorAssemblyInfo.cache
 D:\repos\Distributed Systems\DistSysACW\DistSysACW\obj\Debug\netcoreapp2.2\DistSysACW.RazorAssemblyInfo.cs
 D:\repos\Distributed Systems\DistSysACW\DistSysACW\obj\Debug\netcoreapp2.2\DistSysACW.AssemblyInfoInputs.cache

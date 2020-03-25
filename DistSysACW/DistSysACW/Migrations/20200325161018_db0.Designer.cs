@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DistSysACW.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20200316004142_initMig")]
-    partial class initMig
+    [Migration("20200325161018_db0")]
+    partial class db0
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,11 +22,10 @@ namespace DistSysACW.Migrations
 
             modelBuilder.Entity("DistSysACW.Models.User", b =>
                 {
-                    b.Property<int>("ApiKey")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("ApiKey")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Role");
+                    b.Property<string>("Role");
 
                     b.Property<string>("UserName");
 

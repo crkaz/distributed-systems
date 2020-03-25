@@ -13,6 +13,8 @@ namespace DistSysACW.Filters
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            string unauthResponse = "Unauthorized. Check ApiKey in Header is correct.";
+
             try
             {
                 AuthorizeAttribute authAttribute = (AuthorizeAttribute)context.ActionDescriptor.EndpointMetadata.Where(e => e.GetType() == typeof(AuthorizeAttribute)).FirstOrDefault();
@@ -26,6 +28,10 @@ namespace DistSysACW.Filters
                         {
                             return;
                         }
+                        else if (roles.Count() == 1 && roles[0] == "Admin")
+                        {
+                            unauthResponse = "Unauthorized. Admin access only.";
+                        }
                     }
                     throw new UnauthorizedAccessException();
                 }
@@ -33,7 +39,7 @@ namespace DistSysACW.Filters
             catch
             {
                 context.HttpContext.Response.StatusCode = 401;
-                context.Result = new JsonResult("Unauthorized. Check ApiKey in Header is correct.");
+                context.Result = new JsonResult(unauthResponse);
             }
         }
     }

@@ -14,15 +14,14 @@ namespace DistSysACW.Models
         // Note that you can use the [key] attribute to set your ApiKey Guid as the primary key 
         #endregion
 
-        public enum UserRole { admin, user };
+        public enum UserRole { Admin, User };
 
 
         // DB fields.
         [Key] // Make primary key.
         public string ApiKey { get; set; } // Primary key.
-        public string UserName { get; set; } // Primary key.
-        public UserRole Role { get; set; } // Primary key.
-
+        public string UserName { get; set; }
+        public string Role { get; set; }
 
         public User() { }
     }
@@ -43,11 +42,18 @@ namespace DistSysACW.Models
         public static string CreateUser(string username)
         {
             string apiKey = Guid.NewGuid().ToString();
-            User.UserRole userRole = User.UserRole.user;
+            string userRole = Enum.GetName(typeof(User.UserRole), User.UserRole.User);
+
             User user = new User() { ApiKey = apiKey, Role = userRole, UserName = username };
 
             using (var ctx = new UserContext())
             {
+                // FROM TASK 4:
+                // ...If this is the first user they should be saved as Admin role otherwise just with User role.
+                if (ctx.Users.Count() == 0)
+                {
+                    user.Role = Enum.GetName(typeof(User.UserRole), User.UserRole.Admin);
+                }
                 ctx.Users.Add(user);
                 ctx.SaveChanges();
             }
@@ -74,7 +80,7 @@ namespace DistSysACW.Models
 
         // 3. Check if a user with a given ApiKey and UserName exists in the database, returning true or false.
         /// Could be combined with method 2.
-        public static bool LookupUsernameAndApiKey(string username, string apiKey)
+        public static bool LookupUsernameAndApiKey(string apiKey, string username)
         {
             using (var ctx = new UserContext())
             {
@@ -107,19 +113,20 @@ namespace DistSysACW.Models
         }
 
         // 5. Delete a user with a given ApiKey from the database.
-        /// Could be bool for confirmation of deletion...
         public static void DeleteUserByApiKey(string apiKey)
         {
             using (var ctx = new UserContext())
             {
+                User userToDelete = null; // Cannot modify collection in foreach.
+
                 foreach (var user in ctx.Users)
                 {
                     if (user.ApiKey == apiKey)
                     {
                         try
                         {
-                            ctx.Users.Remove(user);
-                            //return true;
+                            userToDelete = user;
+                            break;
                         }
                         catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
                         {
@@ -127,11 +134,28 @@ namespace DistSysACW.Models
                         }
                     }
                 }
-                //return false;
+                ctx.Users.Remove(userToDelete);
+                ctx.SaveChanges();
             }
         }
 
         // 6. Etc…
+        // This is only possible if usernames are unique but not sure how else can check from usercontroller given query in GET.
+        public static bool CheckUsernameExists(string username)
+        {
+            using (var ctx = new UserContext())
+            {
+                foreach (var user in ctx.Users)
+                {
+                    if (user.UserName == username)
+                    {
+                        return true;
+                    }
+
+                }
+                return false;
+            }
+        }
         ///.......
         ///
         //Hint: The BaseController already

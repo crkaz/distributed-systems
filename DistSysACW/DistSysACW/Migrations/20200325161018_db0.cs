@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DistSysACW.Migrations
 {
-    public partial class initMig : Migration
+    public partial class db0 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,10 +10,9 @@ namespace DistSysACW.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    ApiKey = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApiKey = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
-                    Role = table.Column<int>(nullable: false)
+                    Role = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
