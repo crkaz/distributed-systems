@@ -15,7 +15,7 @@ namespace DistSysACWClient
     class Client
     {
         static readonly HttpClient client = new HttpClient();
-        const string PORT = "44307";
+        const string HOST = "https://localhost:44307/api/";
 
         private static string ApiKey { get; set; }
         private static string Username { get; set; }
@@ -116,13 +116,13 @@ namespace DistSysACWClient
 
         private static void TalkbackHello()
         {
-            string endpoint = "https://localhost:" + PORT + "/api/TalkBack/Hello";
+            string endpoint = HOST + "TalkBack/Hello";
             GetEndpoint(endpoint);
         }
 
         private static void TalkbackSort(string args)
         {
-            string endpoint = "https://localhost:" + PORT + "/api/TalkBack/Sort?integers=";
+            string endpoint = HOST + "TalkBack/Sort?integers=";
 
             try
             {
@@ -157,13 +157,13 @@ namespace DistSysACWClient
 
         private static void UserGet(string args)
         {
-            string endpoint = "https://localhost:" + PORT + "/api/User/New";
+            string endpoint = HOST + "User/New";
             GetEndpoint(endpoint);
         }
 
         private static void UserPost(string args)
         {
-            string endpoint = "https://localhost:" + PORT + "/api/User/New";
+            string endpoint = HOST + "User/New";
             PostEndpoint(endpoint, args);
         }
 
@@ -190,9 +190,31 @@ namespace DistSysACWClient
             }
         }
 
-        private static void UserDelete(string args)
+        private static bool UserDelete(string args)
         {
-            Console.WriteLine("UserDelete works:" + args);
+            string endpoint = HOST + "user/removeuser?username=";
+            bool usernameSet = string.IsNullOrWhiteSpace(Username);
+            bool apiKeySet = string.IsNullOrWhiteSpace(ApiKey);
+            bool userSet = usernameSet && apiKeySet;
+
+            if (userSet)
+            {
+                try
+                {
+
+
+                    return true;
+                }
+                catch
+                {
+                }
+            }
+            else
+            {
+                Console.WriteLine("You need to do a User Post or User Set first");
+            }
+
+            return false;
         }
 
         private static void UserRole(string args)
