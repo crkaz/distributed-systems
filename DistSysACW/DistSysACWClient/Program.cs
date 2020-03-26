@@ -353,12 +353,66 @@ namespace DistSysACWClient
 
         private static void ProtectedSHA1(string args)
         {
-            Console.WriteLine("ProtectedSHA1 works:" + args);
+            string endpoint = "Protected/SHA1?message=";
+            bool apiKeySet = !string.IsNullOrWhiteSpace(ApiKey);
+
+            if (apiKeySet)
+            {
+                PutApiKeyInHeader();
+
+                bool validArgs = true;
+
+                if (string.IsNullOrWhiteSpace(args))
+                {
+                    validArgs = false;
+                }
+
+                if (validArgs)
+                {
+                    endpoint += args;
+                    GetEndpoint(endpoint);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid arguments.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("You need to do a User Post or User Set first");
+            }
         }
 
         private static void ProtectedSHA256(string args)
         {
-            Console.WriteLine("ProtectedSHA256 works:" + args);
+            string endpoint = "Protected/SHA256?message=";
+            bool apiKeySet = !string.IsNullOrWhiteSpace(ApiKey);
+
+            if (apiKeySet)
+            {
+                PutApiKeyInHeader();
+
+                bool validArgs = true;
+
+                if (string.IsNullOrWhiteSpace(args))
+                {
+                    validArgs = false;
+                }
+
+                if (validArgs)
+                {
+                    endpoint += args;
+                    GetEndpoint(endpoint);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid arguments.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("You need to do a User Post or User Set first");
+            }
         }
     }
     #endregion
