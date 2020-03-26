@@ -62,8 +62,8 @@ namespace DistSysACWClient
                         case "Talkback Sort": TalkbackSort(args); break;
                         case "User Get": UserGet(args); break;
                         case "User Post": UserPost(args); break;
-                        case "User Set": break;
-                        case "User Delete": break;
+                        case "User Set": UserSet(args); break;
+                        case "User Delete": UserDelete(args); break;
                         case "User Role": break;
                         case "Protected Hello": break;
                         case "Protected SHA1": break;
@@ -122,6 +122,8 @@ namespace DistSysACWClient
 
         private static void TalkbackSort(string args)
         {
+            string endpoint = "https://localhost:" + PORT + "/api/TalkBack/Sort?integers=";
+
             try
             {
                 if (args.Length < 3) // Array created with a minimum of 3 chars "[_]".
@@ -131,7 +133,6 @@ namespace DistSysACWClient
 
                 args = args.Substring(1, args.Length - 2); // Remove square brackets.
                 string[] parsed = args.Split(',');
-                string endpoint = "https://localhost:" + PORT + "/api/TalkBack/Sort?integers=";
                 int i = 0;
                 foreach (string integer in parsed)
                 {
@@ -168,7 +169,25 @@ namespace DistSysACWClient
 
         private static void UserSet(string args)
         {
-            Console.WriteLine("UserSet works:" + args);
+            // Client only function. Stores api key and username as vars.
+            try
+            {
+                if (args.Length < 3 || !args.Contains(' ')) // Minimum of 2 space separated components "c_c".
+                {
+                    throw new Exception();
+                }
+
+                string[] nameAndApiKey = args.Split(' ');
+
+                Username = nameAndApiKey[0];
+                ApiKey = nameAndApiKey[1];
+
+                Console.WriteLine("Stored");
+            }
+            catch
+            {
+                Console.WriteLine("Invalid arguments.");
+            }
         }
 
         private static void UserDelete(string args)
