@@ -24,10 +24,6 @@ namespace DistSysACWClient
         static void Main(string[] args)
         {
             client.BaseAddress = new Uri(HOST);
-            //client.DefaultRequestHeaders
-            //      .Accept
-            //      .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
-
             Console.WriteLine("Hello. What would you like to do?");
             while (true)
             {
@@ -85,8 +81,7 @@ namespace DistSysACWClient
             }
         }
 
-
-        //----
+        #region API Utils
         private static void GetEndpoint(string endpoint)
         {
             try
@@ -187,9 +182,9 @@ namespace DistSysACWClient
                 Console.WriteLine(e);
             }
         }
-        //----
+        #endregion
 
-
+        #region Client API
         private static void TalkbackHello()
         {
             string endpoint = "TalkBack/Hello";
@@ -454,6 +449,7 @@ namespace DistSysACWClient
                 Console.WriteLine("You need to do a User Post or User Set first");
             }
         }
+        #endregion
     }
     #endregion
 }
