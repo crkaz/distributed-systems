@@ -122,8 +122,6 @@ namespace DistSysACWClient
         {
             try
             {
-                var json = "{\"ApiKey\":" + "\"" + ApiKey + "\"";
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await client.DeleteAsync(endpoint);
 
                 if (response.IsSuccessStatusCode)
@@ -219,7 +217,7 @@ namespace DistSysACWClient
             }
         }
 
-        private static bool UserDelete(string args)
+        private static void UserDelete(string args)
         {
             string endpoint = "User/RemoveUser?username=";
             bool usernameSet = !string.IsNullOrWhiteSpace(Username);
@@ -231,8 +229,7 @@ namespace DistSysACWClient
                 try
                 {
                     bool apiKeyInHeader = client.DefaultRequestHeaders.Contains("ApiKey");
-
-
+                    
                     if (apiKeyInHeader)
                     {
                         client.DefaultRequestHeaders.Remove("ApiKey");
@@ -242,19 +239,16 @@ namespace DistSysACWClient
                     endpoint += Username;
 
                     DeleteEndpoint(endpoint);
-
-                    return true;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
                 }
             }
             else
             {
                 Console.WriteLine("You need to do a User Post or User Set first");
             }
-
-            return false;
         }
 
         private static void UserRole(string args)
