@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -31,15 +32,19 @@ namespace DistSysACWClient
             while (true)
             {
                 string input = Console.ReadLine();
+                Console.Clear();
                 HandleRequest(input);
+                Console.WriteLine("What would you like to do next?");
             }
         }
 
         private static void HandleRequest(string input)
         {
+            Console.WriteLine("...please wait...");
+
             if (!string.IsNullOrWhiteSpace(input))
             {
-                if (input == "q")
+                if (input == "Exit")
                 {
                     Environment.Exit(0);
                 }
@@ -76,76 +81,111 @@ namespace DistSysACWClient
                         default: Console.WriteLine("Unknown command."); break;
                     }
                 }
+
             }
         }
 
 
         //----
-        private static async void GetEndpoint(string endpoint)
+        private static void GetEndpoint(string endpoint)
         {
             try
             {
-                string response = await client.GetStringAsync(endpoint);
-                Console.WriteLine(response);
+                try
+                {
+                    var worker = client.GetStringAsync(endpoint);
+                    var response = worker.GetAwaiter().GetResult();
+                    worker.Wait();
+                    Console.WriteLine(response);
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
-            catch (HttpRequestException e)
+            catch (Exception e) // Catch anything else unexpected.
             {
                 Console.WriteLine(e.Message);
             }
         }
 
-        private static async void PostEndpoint(string endpoint, string body, Action<HttpResponseMessage> onResponse, bool jsonObj = false)
+        private static void PostEndpoint(string endpoint, string body, Action<HttpResponseMessage> onResponse, bool jsonObj = false)
         {
             try
             {
-                string json = body;
-                if (!jsonObj)
+                try
                 {
-                    json = JsonConvert.SerializeObject(body);
-                }
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(endpoint, data);
+                    string json = body;
+                    if (!jsonObj)
+                    {
+                        json = JsonConvert.SerializeObject(body);
+                    }
 
-                onResponse.Invoke(response);
+                    var data = new StringContent(json, Encoding.UTF8, "application/json");
+                    var worker = client.PostAsync(endpoint, data);
+                    var response = worker.GetAwaiter().GetResult();
+                    worker.Wait();
+
+                    onResponse.Invoke(response);
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
-            catch (HttpRequestException e)
+            catch (Exception e) // Catch anything else unexpected.
             {
                 Console.WriteLine(e.Message);
             }
         }
 
-        private static async void DeleteEndpoint(string endpoint)
+        private static void DeleteEndpoint(string endpoint)
         {
             try
             {
-                var response = await client.DeleteAsync(endpoint);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    Console.WriteLine("True");
+                    var worker = client.DeleteAsync(endpoint);
+                    var response = worker.GetAwaiter().GetResult();
+                    worker.Wait();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("True");
+                    }
+                    else
+                    {
+                        Console.WriteLine("False");
+                    }
                 }
-                else
+                catch (HttpRequestException e)
                 {
                     Console.WriteLine("False");
                 }
             }
-            catch (HttpRequestException e)
+            catch (Exception e) // Catch anything else unexpected.
             {
-                Console.WriteLine("False");
-                //Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
             }
         }
 
         private static void PutApiKeyInHeader()
         {
-            bool apiKeyInHeader = client.DefaultRequestHeaders.Contains("ApiKey");
-
-            if (apiKeyInHeader)
+            try
             {
-                client.DefaultRequestHeaders.Remove("ApiKey");
-            }
+                bool apiKeyInHeader = client.DefaultRequestHeaders.Contains("ApiKey");
 
-            client.DefaultRequestHeaders.Add("ApiKey", ApiKey);
+                if (apiKeyInHeader)
+                {
+                    client.DefaultRequestHeaders.Remove("ApiKey");
+                }
+
+                client.DefaultRequestHeaders.Add("ApiKey", ApiKey);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
         //----
 
