@@ -23,9 +23,9 @@ namespace DistSysACWClient
         static void Main(string[] args)
         {
             client.BaseAddress = new Uri(HOST);
-            client.DefaultRequestHeaders
-                  .Accept
-                  .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
+            //client.DefaultRequestHeaders
+            //      .Accept
+            //      .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
 
             Console.WriteLine("Hello. What would you like to do?");
             while (true)
@@ -69,17 +69,18 @@ namespace DistSysACWClient
                         case "User Post": UserPost(args); break;
                         case "User Set": UserSet(args); break;
                         case "User Delete": UserDelete(args); break;
-                        case "User Role": break;
-                        case "Protected Hello": break;
-                        case "Protected SHA1": break;
-                        case "Protected SHA256": break;
+                        case "User Role": UserRole(args); break;
+                        case "Protected Hello": ProtectedHello(); break;
+                        case "Protected SHA1": ProtectedSHA1(args); break;
+                        case "Protected SHA256": ProtectedSHA256(args); break;
                         default: Console.WriteLine("Unknown command."); break;
                     }
                 }
             }
         }
 
-        //
+
+        //----
         private static async void GetEndpoint(string endpoint)
         {
             try
@@ -93,24 +94,19 @@ namespace DistSysACWClient
             }
         }
 
-        private static async void PostEndpoint(string endpoint, string body)
+        private static async void PostEndpoint(string endpoint, string body, Action<HttpResponseMessage> onResponse, bool jsonObj = false)
         {
             try
             {
-                var json = JsonConvert.SerializeObject(body);
+                string json = body;
+                if (!jsonObj)
+                {
+                    json = JsonConvert.SerializeObject(body);
+                }
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(endpoint, data);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    Username = body;
-                    ApiKey = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("Got API Key");
-                }
-                else
-                {
-                    Console.WriteLine(response);
-                }
+                onResponse.Invoke(response);
             }
             catch (HttpRequestException e)
             {
@@ -139,7 +135,20 @@ namespace DistSysACWClient
                 //Console.WriteLine(e.Message);
             }
         }
-        //
+
+        private static void PutApiKeyInHeader()
+        {
+            bool apiKeyInHeader = client.DefaultRequestHeaders.Contains("ApiKey");
+
+            if (apiKeyInHeader)
+            {
+                client.DefaultRequestHeaders.Remove("ApiKey");
+            }
+
+            client.DefaultRequestHeaders.Add("ApiKey", ApiKey);
+        }
+        //----
+
 
         private static void TalkbackHello()
         {
@@ -191,7 +200,46 @@ namespace DistSysACWClient
         private static void UserPost(string args)
         {
             string endpoint = "User/New";
-            PostEndpoint(endpoint, args);
+            bool validArgs = true;
+
+            if (string.IsNullOrWhiteSpace(args))
+            {
+                validArgs = false;
+            }
+
+            string[] split = args.Split(' ');
+            if (split.Length > 1)
+            {
+                validArgs = false;
+            }
+
+            if (validArgs)
+            {
+                string username = split[0];
+
+                // Configure response action.
+                async void Response(HttpResponseMessage response)
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Username = username;
+                        ApiKey = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine("Got API Key");
+                    }
+                    else
+                    {
+                        //responseString = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(response);
+                    }
+                }
+                Action<HttpResponseMessage> onResponse = new Action<HttpResponseMessage>(response => Response(response));
+
+                PostEndpoint(endpoint, username, onResponse);
+            }
+            else
+            {
+                Console.WriteLine("Invalid arguments.");
+            }
         }
 
         private static void UserSet(string args)
@@ -228,14 +276,7 @@ namespace DistSysACWClient
             {
                 try
                 {
-                    bool apiKeyInHeader = client.DefaultRequestHeaders.Contains("ApiKey");
-                    
-                    if (apiKeyInHeader)
-                    {
-                        client.DefaultRequestHeaders.Remove("ApiKey");
-                    }
-
-                    client.DefaultRequestHeaders.Add("ApiKey", ApiKey);
+                    PutApiKeyInHeader();
                     endpoint += Username;
 
                     DeleteEndpoint(endpoint);
@@ -253,12 +294,61 @@ namespace DistSysACWClient
 
         private static void UserRole(string args)
         {
-            Console.WriteLine("UserRole works:" + args);
+            string endpoint = "User/ChangeRole";
+            bool apiKeySet = !string.IsNullOrWhiteSpace(ApiKey);
+
+            if (apiKeySet)
+            {
+                PutApiKeyInHeader();
+                string body = "";
+                try
+                {
+                    if (args.Length < 3 || !args.Contains(' ')) // Minimum of 2 space separated components "c_c".
+                    {
+                        throw new Exception();
+                    }
+
+                    string[] nameAndRole = args.Split(' ');
+                    string username = nameAndRole[0];
+                    string role = nameAndRole[1];
+
+                    body = "{\"username\":\"" + username + "\", \"role\":\"" + role + "\"}";
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid arguments.");
+                }
+
+                // Configure response action.
+                async void Response(HttpResponseMessage response)
+                {
+                    string resultContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(resultContent);
+                }
+                Action<HttpResponseMessage> onResponse = new Action<HttpResponseMessage>(response => Response(response));
+
+                PostEndpoint(endpoint, body, onResponse, true);
+            }
+            else
+            {
+                Console.WriteLine("You need to do a User Post or User Set first");
+            }
         }
 
-        private static void ProtectedHello(string args)
+        private static void ProtectedHello()
         {
-            Console.WriteLine("ProtectedHello works:" + args);
+            string endpoint = "Protected/Hello";
+            bool apiKeySet = !string.IsNullOrWhiteSpace(ApiKey);
+
+            if (apiKeySet)
+            {
+                PutApiKeyInHeader();
+                GetEndpoint(endpoint);
+            }
+            else
+            {
+                Console.WriteLine("You need to do a User Post or User Set first");
+            }
         }
 
         private static void ProtectedSHA1(string args)
