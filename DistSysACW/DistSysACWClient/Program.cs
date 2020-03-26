@@ -14,14 +14,19 @@ namespace DistSysACWClient
     #region Task 10 and beyond
     class Client
     {
-        static readonly HttpClient client = new HttpClient();
         const string HOST = "https://localhost:44307/api/";
+        static readonly HttpClient client = new HttpClient();
 
         private static string ApiKey { get; set; }
         private static string Username { get; set; }
 
         static void Main(string[] args)
         {
+            client.BaseAddress = new Uri(HOST);
+            client.DefaultRequestHeaders
+                  .Accept
+                  .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
+
             Console.WriteLine("Hello. What would you like to do?");
             while (true)
             {
@@ -112,17 +117,41 @@ namespace DistSysACWClient
                 Console.WriteLine(e.Message);
             }
         }
+
+        private static async void DeleteEndpoint(string endpoint)
+        {
+            try
+            {
+                var json = "{\"ApiKey\":" + "\"" + ApiKey + "\"";
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await client.DeleteAsync(endpoint);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("True");
+                }
+                else
+                {
+                    Console.WriteLine("False");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("False");
+                //Console.WriteLine(e.Message);
+            }
+        }
         //
 
         private static void TalkbackHello()
         {
-            string endpoint = HOST + "TalkBack/Hello";
+            string endpoint = "TalkBack/Hello";
             GetEndpoint(endpoint);
         }
 
         private static void TalkbackSort(string args)
         {
-            string endpoint = HOST + "TalkBack/Sort?integers=";
+            string endpoint = "TalkBack/Sort?integers=";
 
             try
             {
@@ -157,13 +186,13 @@ namespace DistSysACWClient
 
         private static void UserGet(string args)
         {
-            string endpoint = HOST + "User/New";
+            string endpoint = "User/New";
             GetEndpoint(endpoint);
         }
 
         private static void UserPost(string args)
         {
-            string endpoint = HOST + "User/New";
+            string endpoint = "User/New";
             PostEndpoint(endpoint, args);
         }
 
@@ -192,16 +221,27 @@ namespace DistSysACWClient
 
         private static bool UserDelete(string args)
         {
-            string endpoint = HOST + "user/removeuser?username=";
-            bool usernameSet = string.IsNullOrWhiteSpace(Username);
-            bool apiKeySet = string.IsNullOrWhiteSpace(ApiKey);
+            string endpoint = "User/RemoveUser?username=";
+            bool usernameSet = !string.IsNullOrWhiteSpace(Username);
+            bool apiKeySet = !string.IsNullOrWhiteSpace(ApiKey);
             bool userSet = usernameSet && apiKeySet;
 
             if (userSet)
             {
                 try
                 {
+                    bool apiKeyInHeader = client.DefaultRequestHeaders.Contains("ApiKey");
 
+
+                    if (apiKeyInHeader)
+                    {
+                        client.DefaultRequestHeaders.Remove("ApiKey");
+                    }
+
+                    client.DefaultRequestHeaders.Add("ApiKey", ApiKey);
+                    endpoint += Username;
+
+                    DeleteEndpoint(endpoint);
 
                     return true;
                 }

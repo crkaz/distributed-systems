@@ -87,8 +87,8 @@ namespace DistSysACW.Controllers
 
         [HttpDelete]
         [ActionName("RemoveUser")]
-        [Authorize(Roles = "Admin, User")]
-        public bool Delete([FromHeader] string apiKey, [FromQuery] string username)
+        [Authorize(Roles = "Admin,User")]
+        public bool Delete([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string username)
         {
             #region // If the server receives this request, it must extract the ApiKey string
             // from the header to see if the API Key is in the database and, if it is, it must
@@ -113,7 +113,7 @@ namespace DistSysACW.Controllers
         [ActionName("ChangeRole")]
         [Authorize(Roles = "Admin")]
         //public IActionResult Post([FromHeader] string apiKey, [FromBody] string json)
-        public IActionResult Post([FromHeader] string apiKey, [FromBody] JObject json)
+        public IActionResult Post([FromHeader(Name = "ApiKey")] string apiKey, [FromBody] JObject json)
         {
             // username, role
             string username = (string)json["username"];

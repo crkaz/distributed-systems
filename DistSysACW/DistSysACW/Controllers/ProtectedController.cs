@@ -27,7 +27,7 @@ namespace DistSysACW.Controllers
         //SHA256CryptoServiceProvider
 
         [HttpGet]
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin,User")]
         public IActionResult Hello([FromHeader] string apiKey)
         {
             #region For Hello: localhost:< portnumber >/ api /protected/hello with an ApiKey in the header of the request
@@ -40,7 +40,7 @@ namespace DistSysACW.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin,User")]
         public IActionResult SHA1([FromQuery] string message)
         {
             if (string.IsNullOrWhiteSpace(message))
@@ -59,7 +59,7 @@ namespace DistSysACW.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin,User")]
         public IActionResult SHA256([FromQuery] string message)
         {
             if (string.IsNullOrWhiteSpace(message))
