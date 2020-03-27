@@ -16,5 +16,11 @@ namespace DistSysACW.Models
         public DateTime LogDateTime { get; set; }
 
         public Log() { }
+
+        public Log(string logString)
+        {
+            LogDateTime = DateTime.Now;
+            LogString = logString;
+        }
     }
 }

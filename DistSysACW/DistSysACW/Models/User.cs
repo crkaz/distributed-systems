@@ -190,8 +190,7 @@ namespace DistSysACW.Models
         {
             using (var ctx = new UserContext())
             {
-                DateTime logDateTime = DateTime.Now;
-                Log log = new Log() { LogString = logString, LogDateTime = logDateTime };
+                Log log = new Log(logString);
                 ctx.Logs.Add(log);
                 ctx.SaveChanges();
             }
