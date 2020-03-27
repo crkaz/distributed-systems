@@ -84,6 +84,8 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin,User")]
         public bool RemoveUser([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string username)
         {
+            UserDatabaseAccess.Log("/User/RemoveUser");
+
             #region // If the server receives this request, it must extract the ApiKey string
             // from the header to see if the API Key is in the database and, if it is, it must
             // check that the username and API Key are the same user and if they are, it must
@@ -107,6 +109,8 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult ChangeRole([FromHeader(Name = "ApiKey")] string apiKey, [FromBody] JObject json)
         {
+            UserDatabaseAccess.Log("/User/ChangeRole");
+
             bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
 
             if (apiKeyInDb)

@@ -17,8 +17,9 @@ namespace DistSysACW.Models
 
         public Log() { }
 
-        public Log(string logString)
+        public Log(string endpoint)
         {
+            string logString = "User requested " + endpoint;
             LogDateTime = DateTime.Now;
             LogString = logString;
         }
