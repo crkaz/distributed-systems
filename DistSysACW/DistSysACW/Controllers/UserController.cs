@@ -22,8 +22,7 @@ namespace DistSysACW.Controllers
 
 
         [HttpGet] // Parses query obj to give raw string value.
-        [ActionName("New")]
-        public IActionResult Get([FromQuery] string username)
+        public IActionResult New([FromQuery] string username)
         {
             // localhost:< portnumber >/api/user/new?username=UserOne
             bool usernameTaken = UserDatabaseAccess.CheckUsernameExists(username);
@@ -47,11 +46,7 @@ namespace DistSysACW.Controllers
         }
 
         [HttpPost]
-        [ActionName("New")]
-        //[Authorize(Roles = "Admin")]
-        // [Authorize(Roles = "Admin,User")]
         public IActionResult Post([FromBody] string json)
-        //public IActionResult Post([FromBody] JRaw json)
         {
             // localhost:< portnumber >/ api / user / new with “UserOne” in the body of the request
             bool jsonIsEmpty = String.IsNullOrWhiteSpace(json.ToString());
@@ -86,9 +81,8 @@ namespace DistSysACW.Controllers
         }
 
         [HttpDelete]
-        [ActionName("RemoveUser")]
         [Authorize(Roles = "Admin,User")]
-        public bool Delete([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string username)
+        public bool RemoveUser([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string username)
         {
             #region // If the server receives this request, it must extract the ApiKey string
             // from the header to see if the API Key is in the database and, if it is, it must
@@ -110,10 +104,8 @@ namespace DistSysACW.Controllers
         }
 
         [HttpPost]
-        [ActionName("ChangeRole")]
         [Authorize(Roles = "Admin")]
-        //public IActionResult Post([FromHeader] string apiKey, [FromBody] string json)
-        public IActionResult Post([FromHeader(Name = "ApiKey")] string apiKey, [FromBody] JObject json)
+        public IActionResult ChangeRole([FromHeader(Name = "ApiKey")] string apiKey, [FromBody] JObject json)
         {
             // username, role
             string username = (string)json["username"];

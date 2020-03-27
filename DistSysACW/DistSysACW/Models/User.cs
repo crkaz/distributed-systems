@@ -22,6 +22,7 @@ namespace DistSysACW.Models
         public string ApiKey { get; set; } // Primary key.
         public string UserName { get; set; }
         public string Role { get; set; }
+        public virtual ICollection<Log> Logs { get; set; }
 
         public User() { }
     }
@@ -185,10 +186,5 @@ namespace DistSysACW.Models
             return false;
         }
         ///.......
-        ///
-        //Hint: The BaseController already
-        //Consider: What happens in your solution if two admin users simultaneously try to change a user’s role?
     }
-
-
 }
