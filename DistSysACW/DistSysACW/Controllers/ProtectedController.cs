@@ -29,51 +29,68 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin,User")]
         public IActionResult Hello([FromHeader] string apiKey)
         {
-            #region For Hello: localhost:< portnumber >/ api /protected/hello with an ApiKey in the header of the request
-            //Should return "Hello <UserName>" in the body of the result, where UserName is the User’s UserName from the database, with a status code of OK(200). E.g. “Hello UserOne”.
-            #endregion
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
 
-            string username = UserDatabaseAccess.GetUserByApiKey(apiKey).UserName;
+            if (apiKeyInDb)
+            {
+                string username = UserDatabaseAccess.GetUserByApiKey(apiKey).UserName;
 
-            return Ok("Hello " + username);
+                return Ok("Hello " + username);
+            }
+
+            return Unauthorized("Unauthorized. Check ApiKey in Header is correct.");
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin,User")]
-        public IActionResult SHA1([FromQuery] string message)
+        public IActionResult SHA1([FromHeader] string apiKey, [FromQuery] string message)
         {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                return BadRequest("Bad Request");
-            }
-            else
-            {
-                byte[] byteMessage = System.Text.Encoding.ASCII.GetBytes(message);
-                SHA1 sha1Provider = new SHA1CryptoServiceProvider();
-                byte[] sha1Message = sha1Provider.ComputeHash(byteMessage);
-                string sha1HashString = HashToString(sha1Message);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
 
-                return Ok(sha1HashString);
+            if (apiKeyInDb)
+            {
+                if (string.IsNullOrWhiteSpace(message))
+                {
+                    return BadRequest("Bad Request");
+                }
+                else
+                {
+                    byte[] byteMessage = System.Text.Encoding.ASCII.GetBytes(message);
+                    SHA1 sha1Provider = new SHA1CryptoServiceProvider();
+                    byte[] sha1Message = sha1Provider.ComputeHash(byteMessage);
+                    string sha1HashString = HashToString(sha1Message);
+
+                    return Ok(sha1HashString);
+                }
             }
+
+            return Unauthorized("Unauthorized. Check ApiKey in Header is correct.");
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin,User")]
-        public IActionResult SHA256([FromQuery] string message)
+        public IActionResult SHA256([FromHeader] string apiKey, [FromQuery] string message)
         {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                return BadRequest("Bad Request");
-            }
-            else
-            {
-                byte[] byteMessage = System.Text.Encoding.ASCII.GetBytes(message);
-                SHA256 sha256Provider = new SHA256CryptoServiceProvider();
-                byte[] sha256Message = sha256Provider.ComputeHash(byteMessage);
-                string sha256HashString = HashToString(sha256Message);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
 
-                return Ok(sha256HashString);
+            if (apiKeyInDb)
+            {
+                if (string.IsNullOrWhiteSpace(message))
+                {
+                    return BadRequest("Bad Request");
+                }
+                else
+                {
+                    byte[] byteMessage = System.Text.Encoding.ASCII.GetBytes(message);
+                    SHA256 sha256Provider = new SHA256CryptoServiceProvider();
+                    byte[] sha256Message = sha256Provider.ComputeHash(byteMessage);
+                    string sha256HashString = HashToString(sha256Message);
+
+                    return Ok(sha256HashString);
+                }
             }
+
+            return Unauthorized("Unauthorized. Check ApiKey in Header is correct.");
         }
 
         [HttpGet]
@@ -88,7 +105,7 @@ namespace DistSysACW.Controllers
                 return Ok(key);
             }
 
-            return BadRequest();
+            return Unauthorized("Unauthorized. Check ApiKey in Header is correct.");
         }
 
         [HttpGet]
@@ -102,7 +119,8 @@ namespace DistSysACW.Controllers
                 string signedMessage = RSAService.Instance.SignData(message);
                 return Ok(signedMessage);
             }
-            return BadRequest();
+
+            return Unauthorized("Unauthorized. Check ApiKey in Header is correct.");
         }
 
         #region Utils

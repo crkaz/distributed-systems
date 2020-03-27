@@ -17,8 +17,8 @@ namespace DistSysACWClient
     #region Task 10 and beyond
     class Client
     {
-        const string HOST = "https://localhost:44307/api/";
-        //const string HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
+        //const string HOST = "https://localhost:44307/api/";
+        const string HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
         static readonly HttpClient client = new HttpClient();
 
         private static string ApiKey { get; set; }
