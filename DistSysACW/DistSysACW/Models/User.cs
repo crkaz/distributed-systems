@@ -185,6 +185,17 @@ namespace DistSysACW.Models
             }
             return false;
         }
+
+        public static void Log(string logString)
+        {
+            using (var ctx = new UserContext())
+            {
+                DateTime logDateTime = DateTime.Now;
+                Log log = new Log() { LogString = logString, LogDateTime = logDateTime };
+                ctx.Logs.Add(log);
+                ctx.SaveChanges();
+            }
+        }
         ///.......
     }
 }
