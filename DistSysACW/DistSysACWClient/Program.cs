@@ -15,7 +15,8 @@ namespace DistSysACWClient
     #region Task 10 and beyond
     class Client
     {
-        const string HOST = "https://localhost:44307/api/";
+        //const string HOST = "https://localhost:44307/api/";
+        const string HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
         static readonly HttpClient client = new HttpClient();
 
         private static string ApiKey { get; set; }
@@ -60,7 +61,7 @@ namespace DistSysACWClient
                         args = input.Substring(cmd.Length + 1); // Get everything after 2 first words + a space.
                     }
                     catch
-                    { }
+                    { } // No args.
 
                     switch (cmd)
                     {
