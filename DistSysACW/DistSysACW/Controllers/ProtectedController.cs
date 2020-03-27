@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using DistSysACW.Models;
+using CoreExtensions;
 
 namespace DistSysACW.Controllers
 {
@@ -22,9 +23,7 @@ namespace DistSysACW.Controllers
         #endregion
 
         /// <param name="context">DbContext set as a service in Startup.cs and dependency injected</param>
-        public ProtectedController(Models.UserContext context) : base(context) { }
-        //SHA1CryptoServiceProvider
-        //SHA256CryptoServiceProvider
+        public ProtectedController(UserContext context) : base(context) { }
 
         [HttpGet]
         [Authorize(Roles = "Admin,User")]
@@ -77,7 +76,36 @@ namespace DistSysACW.Controllers
             }
         }
 
-        // --
+        [HttpGet]
+        [Authorize(Roles = "Admin,User")]
+        public IActionResult GetPublicKey([FromHeader(Name = "ApiKey")] string apiKey)
+        {
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
+
+            if (apiKeyInDb)
+            {
+                string key = RSAService.Instance.GetPublicKey();
+                return Ok(key);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,User")]
+        public IActionResult Sign([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string message)
+        {
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
+
+            if (apiKeyInDb)
+            {
+                string signedMessage = RSAService.Instance.SignData(message);
+                return Ok(signedMessage);
+            }
+            return BadRequest();
+        }
+
+        #region Utils
         private string HashToString(byte[] hash)
         {
             string hexString = "";
@@ -90,5 +118,8 @@ namespace DistSysACW.Controllers
             }
             return hexString;
         }
+        #endregion
     }
+
+
 }

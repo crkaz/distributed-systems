@@ -9,18 +9,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using CoreExtensions;
+using System.Globalization;
 
 namespace DistSysACWClient
 {
     #region Task 10 and beyond
     class Client
     {
-        //const string HOST = "https://localhost:44307/api/";
-        const string HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
+        const string HOST = "https://localhost:44307/api/";
+        //const string HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
         static readonly HttpClient client = new HttpClient();
 
         private static string ApiKey { get; set; }
         private static string Username { get; set; }
+        private static string ServerKey { get; set; }
+        private static RSAParameters PublicKey { get; set; }
 
         static void Main(string[] args)
         {
@@ -75,11 +79,25 @@ namespace DistSysACWClient
                         case "Protected Hello": ProtectedHello(); break;
                         case "Protected SHA1": ProtectedSHA1(args); break;
                         case "Protected SHA256": ProtectedSHA256(args); break;
+                        case "Protected Get"/*PublicKey*/: ProtectedGetPublicKey(); break;
+                        case "Protected Sign": ProtectedSign(args); break;
                         default: Console.WriteLine("Unknown command."); break;
                     }
                 }
 
             }
+        }
+        private string HashToString(byte[] hash)
+        {
+            string hexString = "";
+            if (hash != null)
+            {
+                foreach (byte b in hash)
+                {
+                    hexString += b.ToString("x2");
+                }
+            }
+            return hexString;
         }
 
         #region API Utils
@@ -103,6 +121,46 @@ namespace DistSysACWClient
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        private static string GetGetEndpoint(string endpoint)
+        {
+            try
+            {
+                try
+                {
+                    var worker = client.GetStringAsync(endpoint);
+                    var response = worker.GetAwaiter().GetResult();
+                    worker.Wait();
+                    return response;
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            catch (Exception e) // Catch anything else unexpected.
+            {
+                Console.WriteLine(e.Message);
+            }
+            return null;
+        }
+
+        private static string GetEndpoint(string endpoint, string successResponse, string errorResponse)
+        {
+            try
+            {
+                var worker = client.GetStringAsync(endpoint);
+                var response = worker.GetAwaiter().GetResult();
+                worker.Wait();
+                Console.WriteLine(successResponse);
+                return response;
+            }
+            catch
+            {
+                Console.WriteLine(errorResponse);
+            }
+            return null;
         }
 
         private static void PostEndpoint(string endpoint, string body, Action<HttpResponseMessage> onResponse, bool jsonObj = false)
@@ -156,7 +214,8 @@ namespace DistSysACWClient
                 }
                 catch (HttpRequestException e)
                 {
-                    Console.WriteLine("False");
+                    //Console.WriteLine("False"); // Unsure which is correct.
+                    Console.WriteLine(e.Message);
                 }
             }
             catch (Exception e) // Catch anything else unexpected.
@@ -226,7 +285,7 @@ namespace DistSysACWClient
                 Console.WriteLine("Invalid arguments.");
             }
         }
-
+        //-------------------------
         private static void UserGet(string args)
         {
             string endpoint = "User/New";
@@ -370,7 +429,7 @@ namespace DistSysACWClient
                 Console.WriteLine("You need to do a User Post or User Set first");
             }
         }
-
+        //-------------------------
         private static void ProtectedHello()
         {
             string endpoint = "Protected/Hello";
@@ -443,6 +502,67 @@ namespace DistSysACWClient
                 else
                 {
                     Console.WriteLine("Invalid arguments.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("You need to do a User Post or User Set first");
+            }
+        }
+
+        private static void ProtectedGetPublicKey()
+        {
+            string endpoint = "Protected/GetPublicKey";
+            bool apiKeySet = !string.IsNullOrWhiteSpace(ApiKey);
+
+            if (apiKeySet)
+            {
+                PutApiKeyInHeader();
+                string successMsg = "Got Public Key";
+                string errorMsg = "Couldn’t Get the Public Key";
+                ServerKey = GetEndpoint(endpoint, successMsg, errorMsg);
+            }
+            else
+            {
+                Console.WriteLine("You need to do a User Post or User Set first");
+            }
+        }
+
+        private static void ProtectedSign(string args)
+        {
+            string endpoint = "Protected/Sign?message=" + args;
+            bool apiKeySet = !string.IsNullOrWhiteSpace(ApiKey);
+
+            if (apiKeySet)
+            {
+                PutApiKeyInHeader();
+                bool publicKeySet = !string.IsNullOrWhiteSpace(ServerKey);
+
+                if (publicKeySet)
+                {
+                    string signedString = GetGetEndpoint(endpoint); // Signed data HH-HH-HH...
+                    byte[] signedBytes = signedString.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
+
+                    using (var rsa = new RSACryptoServiceProvider())
+                    {
+                        rsa.FromXmlStringCore22(ServerKey);
+                        byte[] asciiByteMessage = Encoding.ASCII.GetBytes(args); // Original message, encoded.
+
+                        bool verified = rsa.VerifyData(asciiByteMessage, new SHA1CryptoServiceProvider(), signedBytes);
+
+                        if (verified)
+                        {
+                            Console.WriteLine("Message was successfully signed");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Message was not successfully signed");
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Client doesn’t yet have the public key");
                 }
             }
             else
