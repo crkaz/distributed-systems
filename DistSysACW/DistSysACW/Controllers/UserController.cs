@@ -107,36 +107,40 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult ChangeRole([FromHeader(Name = "ApiKey")] string apiKey, [FromBody] JObject json)
         {
-            // username, role
-            string username = (string)json["username"];
-            string role = ((string)json["role"]);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
 
-            bool roleExists = (role == "Admin" || role == "User");
-            bool usernameExists = UserDatabaseAccess.CheckUsernameExists(username);
-
-            if (usernameExists && roleExists)
+            if (apiKeyInDb)
             {
-                //If success: Should return "DONE" in the body of the result, with a status code of OK(200)
-                bool success = UserDatabaseAccess.ChangeRole(username, role);
-                if (success)
+                // username, role
+                string username = (string)json["username"];
+                string role = ((string)json["role"]);
+
+                bool roleExists = (role == "Admin" || role == "User");
+                bool usernameExists = UserDatabaseAccess.CheckUsernameExists(username);
+
+                if (usernameExists && roleExists)
                 {
-                    return Ok("DONE");
+                    //If success: Should return "DONE" in the body of the result, with a status code of OK(200)
+                    bool success = UserDatabaseAccess.ChangeRole(username, role);
+                    if (success)
+                    {
+                        return Ok("DONE");
+                    }
                 }
-            }
-            else if (!usernameExists)
-            {
-                //If username does not exist: Should return "NOT DONE: Username does not exist" in the body of the result, with a status code of BAD REQUEST(400)
-                return BadRequest("NOT DONE: Username does not exist");
-            }
-            else if (!roleExists)
-            {
-                //If role is not User or Admin: Should return "NOT DONE: Role does not exist" in the body of the result, with a status code of BAD REQUEST(400)
-                return BadRequest("NOT DONE: Role does not exist");
+                else if (!usernameExists)
+                {
+                    //If username does not exist: Should return "NOT DONE: Username does not exist" in the body of the result, with a status code of BAD REQUEST(400)
+                    return BadRequest("NOT DONE: Username does not exist");
+                }
+                else if (!roleExists)
+                {
+                    //If role is not User or Admin: Should return "NOT DONE: Role does not exist" in the body of the result, with a status code of BAD REQUEST(400)
+                    return BadRequest("NOT DONE: Role does not exist");
+                }
             }
 
             //In all other error cases: Should return "NOT DONE: An error occured" in the body of the result, with a status code of BAD REQUEST(400)
             return BadRequest("NOT DONE: An error occured");
         }
-
     }
 }
