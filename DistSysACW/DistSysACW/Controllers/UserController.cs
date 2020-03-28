@@ -19,7 +19,7 @@ namespace DistSysACW.Controllers
         public IActionResult New([FromQuery] string username)
         {
             // localhost:< portnumber >/api/user/new?username=UserOne
-            bool usernameTaken = UserDatabaseAccess.CheckUsernameExists(_context, username);
+            bool usernameTaken = UserDatabaseAccess.CheckUsernameExists(username);
 
             try
             {
@@ -44,7 +44,7 @@ namespace DistSysACW.Controllers
         {
             // localhost:< portnumber >/ api / user / new with “UserOne” in the body of the request
             bool jsonIsEmpty = String.IsNullOrWhiteSpace(json.ToString());
-            bool usernameExists = UserDatabaseAccess.CheckUsernameExists(_context, json.ToString());
+            bool usernameExists = UserDatabaseAccess.CheckUsernameExists(json.ToString());
 
             if (jsonIsEmpty)
             {
@@ -69,7 +69,7 @@ namespace DistSysACW.Controllers
                 // to the client with a status code of OK(200). If this is the first user they should be saved as Admin role,
                 // otherwise just with User role.
                 #endregion
-                string apiKey = UserDatabaseAccess.CreateUser(_context, json.ToString());
+                string apiKey = UserDatabaseAccess.CreateUser(json.ToString());
                 return Ok(apiKey);
             }
         }
@@ -78,7 +78,7 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin,User")]
         public bool RemoveUser([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string username)
         {
-            UserDatabaseAccess.Log(_context, apiKey, "/User/RemoveUser");
+            UserDatabaseAccess.Log(apiKey, "/User/RemoveUser");
 
             #region // If the server receives this request, it must extract the ApiKey string
             // from the header to see if the API Key is in the database and, if it is, it must
@@ -86,11 +86,11 @@ namespace DistSysACW.Controllers
             // delete this user from the database. You should probably use your UserDatabaseAccess
             // class that you created in TASK3 to do the database access.
             #endregion
-            bool usernameMatchesApiKey = UserDatabaseAccess.LookupUsernameAndApiKey(_context, apiKey, username);
+            bool usernameMatchesApiKey = UserDatabaseAccess.LookupUsernameAndApiKey(apiKey, username);
 
             if (usernameMatchesApiKey)
             {
-                bool success = UserDatabaseAccess.DeleteUserByApiKey(_context, apiKey);
+                bool success = UserDatabaseAccess.DeleteUserByApiKey(apiKey);
                 if (success)
                 {
                     return true;
@@ -103,9 +103,9 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult ChangeRole([FromHeader(Name = "ApiKey")] string apiKey, [FromBody] JObject json)
         {
-            UserDatabaseAccess.Log(_context, apiKey, "/User/ChangeRole");
+            UserDatabaseAccess.Log(apiKey, "/User/ChangeRole");
 
-            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
 
             if (apiKeyInDb)
             {
@@ -114,12 +114,12 @@ namespace DistSysACW.Controllers
                 string role = ((string)json["role"]);
 
                 bool roleExists = (role == "Admin" || role == "User");
-                bool usernameExists = UserDatabaseAccess.CheckUsernameExists(_context, username);
+                bool usernameExists = UserDatabaseAccess.CheckUsernameExists(username);
 
                 if (usernameExists && roleExists)
                 {
                     //If success: Should return "DONE" in the body of the result, with a status code of OK(200)
-                    bool success = UserDatabaseAccess.ChangeRole(_context, username, role);
+                    bool success = UserDatabaseAccess.ChangeRole(username, role);
                     if (success)
                     {
                         return Ok("DONE");

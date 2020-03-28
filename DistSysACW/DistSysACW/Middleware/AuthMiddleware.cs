@@ -17,7 +17,7 @@ namespace DistSysACW.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, Models.UserContext dbContext)
+        public async Task InvokeAsync(HttpContext context, UserContext dbContext)
         {
             #region Task5
             // TODO:  Find if a header ‘ApiKey’ exists, and if it does, check the database to determine if the given API Key is valid
@@ -28,12 +28,12 @@ namespace DistSysACW.Middleware
             string apiKey = string.Empty;
             if (context.Request.Headers.TryGetValue(apiKeyHeader, out var headerValues))
             {
-                apiKey = headerValues.FirstOrDefault();
+                apiKey = headerValues.FirstOrDefault(); // Extract from headerValues array.
                 bool keyExists = UserDatabaseAccess.LookupApiKey(apiKey);
 
                 if (keyExists)
                 {
-                    User user = UserDatabaseAccess.GetUserByApiKey(apiKey);
+                    User user = UserDatabaseAccess.GetUserByApiKey(dbContext, apiKey);
  
                     Claim[] claims =
                     {

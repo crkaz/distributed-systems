@@ -35,7 +35,7 @@ namespace DistSysACW.Controllers
 
             if (apiKeyInDb)
             {
-                string username = UserDatabaseAccess.GetUserByApiKey(apiKey).UserName;
+                string username = UserDatabaseAccess.GetUserByApiKey(_context, apiKey).UserName;
 
                 return Ok("Hello " + username);
             }
