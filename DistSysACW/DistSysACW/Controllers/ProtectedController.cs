@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using DistSysACW.Models;
-using CoreExtensions;
 
 namespace DistSysACW.Controllers
 {
@@ -29,9 +21,9 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin,User")]
         public IActionResult Hello([FromHeader] string apiKey)
         {
-            UserDatabaseAccess.Log(apiKey, "/Protected/Hello");
+            UserDatabaseAccess.Log(_context, apiKey, "/Protected/Hello");
 
-            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
 
             if (apiKeyInDb)
             {
@@ -47,9 +39,9 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin,User")]
         public IActionResult SHA1([FromHeader] string apiKey, [FromQuery] string message)
         {
-            UserDatabaseAccess.Log(apiKey, "/Protected/SHA1");
+            UserDatabaseAccess.Log(_context, apiKey, "/Protected/SHA1");
 
-            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
 
             if (apiKeyInDb)
             {
@@ -75,9 +67,9 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin,User")]
         public IActionResult SHA256([FromHeader] string apiKey, [FromQuery] string message)
         {
-            UserDatabaseAccess.Log(apiKey, "/Protected/SHA256");
+            UserDatabaseAccess.Log(_context, apiKey, "/Protected/SHA256");
 
-            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
 
             if (apiKeyInDb)
             {
@@ -103,9 +95,9 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin,User")]
         public IActionResult GetPublicKey([FromHeader(Name = "ApiKey")] string apiKey)
         {
-            UserDatabaseAccess.Log(apiKey, "/Protected/GetPublicKey");
+            UserDatabaseAccess.Log(_context, apiKey, "/Protected/GetPublicKey");
 
-            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
 
             if (apiKeyInDb)
             {
@@ -120,9 +112,9 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin,User")]
         public IActionResult Sign([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string message)
         {
-            UserDatabaseAccess.Log(apiKey, "/Protected/Sign");
+            UserDatabaseAccess.Log(_context, apiKey, "/Protected/Sign");
 
-            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
 
             if (apiKeyInDb)
             {

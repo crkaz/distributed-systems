@@ -40,44 +40,27 @@ namespace DistSysACW.Models
         // 1. Create a new user, using a username given as a parameter and creating a new GUID which is saved
         // as a string to the database as the ApiKey.This must return the ApiKey or the User object so that
         // the server can pass the Key back to the client.
-        public static string CreateUser(string username)
+        public static string CreateUser(UserContext ctx, string username)
         {
             string apiKey = Guid.NewGuid().ToString();
             string userRole = Enum.GetName(typeof(User.UserRole), User.UserRole.User);
 
             User user = new User() { ApiKey = apiKey, Role = userRole, UserName = username };
 
-            using (var ctx = new UserContext())
+            // FROM TASK 4:
+            // ...If this is the first user they should be saved as Admin role otherwise just with User role.
+            if (ctx.Users.Count() == 0)
             {
-                // FROM TASK 4:
-                // ...If this is the first user they should be saved as Admin role otherwise just with User role.
-                if (ctx.Users.Count() == 0)
-                {
-                    user.Role = Enum.GetName(typeof(User.UserRole), User.UserRole.Admin);
-                }
-                ctx.Users.Add(user);
-                ctx.SaveChanges();
+                user.Role = Enum.GetName(typeof(User.UserRole), User.UserRole.Admin);
             }
+            ctx.Users.Add(user);
+            ctx.SaveChanges();
 
             return apiKey;
         }
 
         // 2. Check if a user with a given ApiKey string exists in the database, returning true or false.
-        public static bool LookupApiKey(string apiKey)
-        {
-            using (var ctx = new UserContext())
-            {
-                foreach (var user in ctx.Users)
-                {
-                    if (user.ApiKey == apiKey)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-        public static bool TEMPLookupApiKey(UserContext ctx, string apiKey)
+        public static bool LookupApiKey(UserContext ctx, string apiKey)
         {
             foreach (var user in ctx.Users)
             {
@@ -91,19 +74,16 @@ namespace DistSysACW.Models
 
         // 3. Check if a user with a given ApiKey and UserName exists in the database, returning true or false.
         /// Could be combined with method 2.
-        public static bool LookupUsernameAndApiKey(string apiKey, string username)
+        public static bool LookupUsernameAndApiKey(UserContext ctx, string apiKey, string username)
         {
-            using (var ctx = new UserContext())
+            foreach (var user in ctx.Users)
             {
-                foreach (var user in ctx.Users)
+                if (user.UserName == username && user.ApiKey == apiKey)
                 {
-                    if (user.UserName == username && user.ApiKey == apiKey)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                return false;
             }
+            return false;
         }
 
         // 4. Check if a user with a given ApiKey string exists in the database, returning the User object.
@@ -120,88 +100,76 @@ namespace DistSysACW.Models
         }
 
         // 5. Delete a user with a given ApiKey from the database.
-        public static bool DeleteUserByApiKey(string apiKey)
+        public static bool DeleteUserByApiKey(UserContext ctx, string apiKey)
         {
-            using (var ctx = new UserContext())
+            User userToDelete = null; // Cannot modify collection in foreach.
+
+            foreach (var user in ctx.Users)
             {
-                User userToDelete = null; // Cannot modify collection in foreach.
+                if (user.ApiKey == apiKey)
+                {
+                    userToDelete = user;
+                    break;
+                }
+            }
 
-                foreach (var user in ctx.Users)
-                {
-                    if (user.ApiKey == apiKey)
-                    {
-                        userToDelete = user;
-                        break;
-                    }
-                }
-
-                try
-                {
-                    ctx.Users.Remove(userToDelete);
-                    ctx.SaveChanges();
-                    return true;
-                }
-                catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
-                {
-                    Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
-                }
+            try
+            {
+                ctx.Users.Remove(userToDelete);
+                ctx.SaveChanges();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
+            {
+                Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
             }
             return false;
         }
 
         // 6. Etc…
         // This is only possible if usernames are unique but not sure how else can check from usercontroller given query in GET.
-        public static bool CheckUsernameExists(string username)
+        public static bool CheckUsernameExists(UserContext ctx, string username)
         {
-            using (var ctx = new UserContext())
+            foreach (var user in ctx.Users)
             {
-                foreach (var user in ctx.Users)
+                if (user.UserName == username)
                 {
-                    if (user.UserName == username)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-
-        public static bool ChangeRole(string username, string role)
-        {
-            using (var ctx = new UserContext())
-            {
-                User userToChange = null; // Cannot modify collection in foreach.
-                foreach (var user in ctx.Users)
-                {
-                    if (user.UserName == username)
-                    {
-                        userToChange = user;
-                        break;
-                    }
-                }
-
-                try
-                {
-                    userToChange.Role = role;
-                    ctx.SaveChanges();
                     return true;
-                }
-                catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
-                {
-                    Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
                 }
             }
             return false;
         }
 
-        public static void Log(string apiKey, string logString)
+        public static bool ChangeRole(UserContext ctx, string username, string role)
         {
-            using (var ctx = new UserContext())
+            User userToChange = null; // Cannot modify collection in foreach.
+            foreach (var user in ctx.Users)
             {
-                Log log = new Log(logString);
-                ctx.Logs.Add(log);
-                ctx.SaveChanges();
+                if (user.UserName == username)
+                {
+                    userToChange = user;
+                    break;
+                }
             }
+
+            try
+            {
+                userToChange.Role = role;
+                ctx.SaveChanges();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
+            {
+                Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
+            }
+            return false;
+        }
+
+        public static void Log(UserContext ctx, string apiKey, string logString)
+        {
+            Log log = new Log(logString);
+            ctx.Logs.Add(log);
+            ctx.SaveChanges();
         }
         ///.......
     }

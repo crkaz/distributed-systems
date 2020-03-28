@@ -1,7 +1,5 @@
 ﻿using DistSysACW.Models;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -29,7 +27,7 @@ namespace DistSysACW.Middleware
             if (context.Request.Headers.TryGetValue(apiKeyHeader, out var headerValues))
             {
                 apiKey = headerValues.FirstOrDefault(); // Extract from headerValues array.
-                bool keyExists = UserDatabaseAccess.TEMPLookupApiKey(dbContext, apiKey);
+                bool keyExists = UserDatabaseAccess.LookupApiKey(dbContext, apiKey);
 
                 if (keyExists)
                 {

@@ -24,7 +24,6 @@ namespace DistSysACWClient
         private static string ApiKey { get; set; }
         private static string Username { get; set; }
         private static string ServerKey { get; set; }
-        private static RSAParameters PublicKey { get; set; }
 
         static void Main(string[] args)
         {

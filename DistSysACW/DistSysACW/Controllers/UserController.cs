@@ -16,10 +16,11 @@ namespace DistSysACW.Controllers
 
 
         [HttpGet] // Parses query obj to give raw string value.
-        public IActionResult New([FromQuery] string username)
+        [ActionName("New")]
+        public IActionResult Get([FromQuery] string username)
         {
             // localhost:< portnumber >/api/user/new?username=UserOne
-            bool usernameTaken = UserDatabaseAccess.CheckUsernameExists(username);
+            bool usernameTaken = UserDatabaseAccess.CheckUsernameExists(_context, username);
 
             try
             {
@@ -40,11 +41,12 @@ namespace DistSysACW.Controllers
         }
 
         [HttpPost]
+        [ActionName("New")]
         public IActionResult Post([FromBody] string json)
         {
             // localhost:< portnumber >/ api / user / new with “UserOne” in the body of the request
-            bool jsonIsEmpty = String.IsNullOrWhiteSpace(json.ToString());
-            bool usernameExists = UserDatabaseAccess.CheckUsernameExists(json.ToString());
+            bool jsonIsEmpty = string.IsNullOrWhiteSpace(json.ToString());
+            bool usernameExists = UserDatabaseAccess.CheckUsernameExists(_context, json.ToString());
 
             if (jsonIsEmpty)
             {
@@ -69,7 +71,7 @@ namespace DistSysACW.Controllers
                 // to the client with a status code of OK(200). If this is the first user they should be saved as Admin role,
                 // otherwise just with User role.
                 #endregion
-                string apiKey = UserDatabaseAccess.CreateUser(json.ToString());
+                string apiKey = UserDatabaseAccess.CreateUser(_context, json.ToString());
                 return Ok(apiKey);
             }
         }
@@ -78,7 +80,7 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin,User")]
         public bool RemoveUser([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string username)
         {
-            UserDatabaseAccess.Log(apiKey, "/User/RemoveUser");
+            UserDatabaseAccess.Log(_context, apiKey, "/User/RemoveUser");
 
             #region // If the server receives this request, it must extract the ApiKey string
             // from the header to see if the API Key is in the database and, if it is, it must
@@ -86,11 +88,11 @@ namespace DistSysACW.Controllers
             // delete this user from the database. You should probably use your UserDatabaseAccess
             // class that you created in TASK3 to do the database access.
             #endregion
-            bool usernameMatchesApiKey = UserDatabaseAccess.LookupUsernameAndApiKey(apiKey, username);
+            bool usernameMatchesApiKey = UserDatabaseAccess.LookupUsernameAndApiKey(_context, apiKey, username);
 
             if (usernameMatchesApiKey)
             {
-                bool success = UserDatabaseAccess.DeleteUserByApiKey(apiKey);
+                bool success = UserDatabaseAccess.DeleteUserByApiKey(_context, apiKey);
                 if (success)
                 {
                     return true;
@@ -103,9 +105,9 @@ namespace DistSysACW.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult ChangeRole([FromHeader(Name = "ApiKey")] string apiKey, [FromBody] JObject json)
         {
-            UserDatabaseAccess.Log(apiKey, "/User/ChangeRole");
+            UserDatabaseAccess.Log(_context, apiKey, "/User/ChangeRole");
 
-            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(apiKey);
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
 
             if (apiKeyInDb)
             {
@@ -114,12 +116,12 @@ namespace DistSysACW.Controllers
                 string role = ((string)json["role"]);
 
                 bool roleExists = (role == "Admin" || role == "User");
-                bool usernameExists = UserDatabaseAccess.CheckUsernameExists(username);
+                bool usernameExists = UserDatabaseAccess.CheckUsernameExists(_context, username);
 
                 if (usernameExists && roleExists)
                 {
                     //If success: Should return "DONE" in the body of the result, with a status code of OK(200)
-                    bool success = UserDatabaseAccess.ChangeRole(username, role);
+                    bool success = UserDatabaseAccess.ChangeRole(_context, username, role);
                     if (success)
                     {
                         return Ok("DONE");
