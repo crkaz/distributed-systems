@@ -126,18 +126,18 @@ namespace DistSysACW.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddFifty([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string encryptedInteger, [FromQuery] string encryptedSymKey, [FromQuery] string encryptedIV)
         {
             UserDatabaseAccess.Log(_context, apiKey, "/Protected/AddFifty");
 
             bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
-            //"?encryptedInteger="
-            //"&encryptedSymKey="
-            //"&encryptedIV="
             if (apiKeyInDb)
             {
-                string key = RSAService.Instance.GetPublicKey();
+                var v1 = RSAService.Instance.Decrypt(encryptedInteger);
+                var v2 = RSAService.Instance.Decrypt(encryptedSymKey);
+                var v3 = RSAService.Instance.Decrypt(encryptedIV);
+                //string key = RSAService.Instance.GetPublicKey();
 
                 //string signedString = GetGetEndpoint(endpoint); // Signed data HH-HH-HH...
                 //byte[] signedBytes = signedString.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
@@ -159,7 +159,6 @@ namespace DistSysACW.Controllers
                 //    }
                 //}
 
-                return Ok(key);
             }
 
             return Unauthorized("Unauthorized. Check ApiKey in Header is correct.");

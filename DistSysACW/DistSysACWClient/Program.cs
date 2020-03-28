@@ -80,6 +80,7 @@ namespace DistSysACWClient
                         case "Protected SHA256": ProtectedSHA256(args); break;
                         case "Protected Get"/*PublicKey*/: ProtectedGetPublicKey(); break;
                         case "Protected Sign": ProtectedSign(args); break;
+                        case "Protected AddFifty": ProtectedAddFifty(args); break;
                         default: Console.WriteLine("Unknown command."); break;
                     }
                 }
@@ -229,6 +230,32 @@ namespace DistSysACWClient
             catch (Exception e)
             {
                 Console.WriteLine(e);
+            }
+        }
+
+        private static string Encrypt(string args)
+        {
+            using (var rsa = new RSACryptoServiceProvider())
+            {
+                rsa.FromXmlStringCore22(ServerKey);
+                byte[] asciiByteMessage = Encoding.ASCII.GetBytes(args); // Original message, encoded.
+                byte[] encryption = rsa.Encrypt(asciiByteMessage, true);
+                string encryptedString = BitConverter.ToString(encryption);
+
+                return encryptedString;
+            }
+        }
+
+        private static bool VerifySigning(string original, string signed)
+        {
+            using (var rsa = new RSACryptoServiceProvider())
+            {
+                byte[] signedBytes = signed.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
+                byte[] asciiByteMessage = Encoding.ASCII.GetBytes(original); // Original message, encoded.
+                rsa.FromXmlStringCore22(ServerKey);
+                bool verified = rsa.VerifyData(asciiByteMessage, new SHA1CryptoServiceProvider(), signedBytes);
+
+                return verified;
             }
         }
         #endregion
@@ -536,23 +563,16 @@ namespace DistSysACWClient
                 if (publicKeySet)
                 {
                     string signedString = GetGetEndpoint(endpoint); // Signed data HH-HH-HH...
-                    byte[] signedBytes = signedString.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
 
-                    using (var rsa = new RSACryptoServiceProvider())
+                    bool verified = VerifySigning(args, signedString);
+
+                    if (verified)
                     {
-                        rsa.FromXmlStringCore22(ServerKey);
-                        byte[] asciiByteMessage = Encoding.ASCII.GetBytes(args); // Original message, encoded.
-
-                        bool verified = rsa.VerifyData(asciiByteMessage, new SHA1CryptoServiceProvider(), signedBytes);
-
-                        if (verified)
-                        {
-                            Console.WriteLine("Message was successfully signed");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Message was not successfully signed");
-                        }
+                        Console.WriteLine("Message was successfully signed");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Message was not successfully signed");
                     }
                 }
                 else
@@ -568,7 +588,36 @@ namespace DistSysACWClient
 
         private static void ProtectedAddFifty(string args)
         {
+            string endpoint = "Protected/AddFifty";
+            bool apiKeySet = !string.IsNullOrWhiteSpace(ApiKey);
 
+            if (apiKeySet)
+            {
+                PutApiKeyInHeader();
+                bool publicKeySet = !string.IsNullOrWhiteSpace(ServerKey);
+
+                if (publicKeySet)
+                {
+                    // Parse args.
+
+                    // do int
+                    endpoint += "?encryptedInteger=" + Encrypt(args);
+                    // need to do aes
+                    endpoint += "&encryptedSymKey=" + Encrypt(args);
+                    // need to do iv
+                    endpoint += "&encryptedIV=" + Encrypt(args);
+
+                    GetEndpoint(endpoint);
+                }
+                else
+                {
+                    Console.WriteLine("Client doesn’t yet have the public key");
+                }
+            }
+            else
+            {
+                Console.WriteLine("You need to do a User Post or User Set first");
+            }
         }
         #endregion
     }

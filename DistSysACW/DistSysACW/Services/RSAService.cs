@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using CoreExtensions;
 
 namespace DistSysACW
@@ -51,7 +54,22 @@ namespace DistSysACW
             byte[] signed = RSA.SignData(asciiByteMessage, new SHA1CryptoServiceProvider());
 
             return BitConverter.ToString(signed);
-            
+
+        }
+
+        public string Decrypt(string hex)
+        {
+            byte[] encryption = hex.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
+            byte[] decrypted = RSA.Decrypt(encryption, true);
+            var val = Encoding.ASCII.GetString(decrypted);
+
+            return val;
+        }
+
+        private string GetPrivateKey()
+        {
+            // Re-init rsa with key stored in container created with instance and get key.
+            return RSA.ToXmlStringCore22(true);
         }
 
         private RSACryptoServiceProvider GetRSA()

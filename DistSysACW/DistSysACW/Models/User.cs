@@ -142,6 +142,8 @@ namespace DistSysACW.Models
                 {
                     try
                     {
+                        Archive archive = new Archive() { ApiKey = apiKey, Logs = userToDelete.Logs };
+                        ctx.ArchivedLogs.Add(archive);
                         ctx.Users.Remove(userToDelete);
                         ctx.SaveChanges();
                         return true;
