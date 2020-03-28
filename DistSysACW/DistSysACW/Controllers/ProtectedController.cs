@@ -125,6 +125,46 @@ namespace DistSysACW.Controllers
             return Unauthorized("Unauthorized. Check ApiKey in Header is correct.");
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin,User")]
+        public IActionResult AddFifty([FromHeader(Name = "ApiKey")] string apiKey, [FromQuery] string encryptedInteger, [FromQuery] string encryptedSymKey, [FromQuery] string encryptedIV)
+        {
+            UserDatabaseAccess.Log(_context, apiKey, "/Protected/AddFifty");
+
+            bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
+            //"?encryptedInteger="
+            //"&encryptedSymKey="
+            //"&encryptedIV="
+            if (apiKeyInDb)
+            {
+                string key = RSAService.Instance.GetPublicKey();
+
+                //string signedString = GetGetEndpoint(endpoint); // Signed data HH-HH-HH...
+                //byte[] signedBytes = signedString.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
+
+                //using (var rsa = new RSACryptoServiceProvider())
+                //{
+                //    rsa.FromXmlStringCore22(ServerKey);
+                //    byte[] asciiByteMessage = Encoding.ASCII.GetBytes(args); // Original message, encoded.
+
+                //    bool verified = rsa.VerifyData(asciiByteMessage, new SHA1CryptoServiceProvider(), signedBytes);
+
+                //    if (verified)
+                //    {
+                //        Console.WriteLine("Message was successfully signed");
+                //    }
+                //    else
+                //    {
+                //        Console.WriteLine("Message was not successfully signed");
+                //    }
+                //}
+
+                return Ok(key);
+            }
+
+            return Unauthorized("Unauthorized. Check ApiKey in Header is correct.");
+        }
+
         #region Utils
         private string HashToString(byte[] hash)
         {
@@ -140,6 +180,4 @@ namespace DistSysACW.Controllers
         }
         #endregion
     }
-
-
 }

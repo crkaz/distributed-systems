@@ -42,33 +42,49 @@ namespace DistSysACW.Models
         // the server can pass the Key back to the client.
         public static string CreateUser(UserContext ctx, string username)
         {
-            string apiKey = Guid.NewGuid().ToString();
-            string userRole = Enum.GetName(typeof(User.UserRole), User.UserRole.User);
-
-            User user = new User() { ApiKey = apiKey, Role = userRole, UserName = username };
-
-            // FROM TASK 4:
-            // ...If this is the first user they should be saved as Admin role otherwise just with User role.
-            if (ctx.Users.Count() == 0)
+            try
             {
-                user.Role = Enum.GetName(typeof(User.UserRole), User.UserRole.Admin);
-            }
-            ctx.Users.Add(user);
-            ctx.SaveChanges();
+                string apiKey = Guid.NewGuid().ToString();
+                string userRole = Enum.GetName(typeof(User.UserRole), User.UserRole.User);
 
-            return apiKey;
+                User user = new User() { ApiKey = apiKey, Role = userRole, UserName = username };
+
+                // FROM TASK 4:
+                // ...If this is the first user they should be saved as Admin role otherwise just with User role.
+                if (ctx.Users.Count() == 0)
+                {
+                    user.Role = Enum.GetName(typeof(User.UserRole), User.UserRole.Admin);
+                }
+                ctx.Users.Add(user);
+                ctx.SaveChanges();
+                return apiKey;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected error: " + e.Message);
+                return e.Message;
+            }
+
         }
 
         // 2. Check if a user with a given ApiKey string exists in the database, returning true or false.
         public static bool LookupApiKey(UserContext ctx, string apiKey)
         {
-            foreach (var user in ctx.Users)
+            try
             {
-                if (user.ApiKey == apiKey)
+                foreach (var user in ctx.Users)
                 {
-                    return true;
+                    if (user.ApiKey == apiKey)
+                    {
+                        return true;
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected error: " + e.Message);
+            }
+
             return false;
         }
 
@@ -76,53 +92,71 @@ namespace DistSysACW.Models
         /// Could be combined with method 2.
         public static bool LookupUsernameAndApiKey(UserContext ctx, string apiKey, string username)
         {
-            foreach (var user in ctx.Users)
+            try
             {
-                if (user.UserName == username && user.ApiKey == apiKey)
+                foreach (var user in ctx.Users)
                 {
-                    return true;
+                    if (user.UserName == username && user.ApiKey == apiKey)
+                    {
+                        return true;
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected error: " + e.Message);
+            }
+
             return false;
         }
 
         // 4. Check if a user with a given ApiKey string exists in the database, returning the User object.
         public static User GetUserByApiKey(UserContext ctx, string apiKey)
         {
-            foreach (var user in ctx.Users)
+            try
             {
-                if (user.ApiKey == apiKey)
+                foreach (var user in ctx.Users)
                 {
-                    return user;
+                    if (user.ApiKey == apiKey)
+                    {
+                        return user;
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected error: " + e.Message);
+            }
+
             return null;
         }
 
         // 5. Delete a user with a given ApiKey from the database.
         public static bool DeleteUserByApiKey(UserContext ctx, string apiKey)
         {
-            User userToDelete = null; // Cannot modify collection in foreach.
-
-            foreach (var user in ctx.Users)
-            {
-                if (user.ApiKey == apiKey)
-                {
-                    userToDelete = user;
-                    break;
-                }
-            }
-
             try
             {
-                ctx.Users.Remove(userToDelete);
-                ctx.SaveChanges();
-                return true;
+                User userToDelete = ctx.Users.Find(apiKey);
+
+                if (userToDelete != null)
+                {
+                    try
+                    {
+                        ctx.Users.Remove(userToDelete);
+                        ctx.SaveChanges();
+                        return true;
+                    }
+                    catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
+                    {
+                        Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
+                    }
+                }
             }
-            catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
+            catch (Exception e)
             {
-                Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
+                Console.WriteLine("Unexpected error.");
             }
+
             return false;
         }
 
@@ -130,38 +164,54 @@ namespace DistSysACW.Models
         // This is only possible if usernames are unique but not sure how else can check from usercontroller given query in GET.
         public static bool CheckUsernameExists(UserContext ctx, string username)
         {
-            foreach (var user in ctx.Users)
+            try
             {
-                if (user.UserName == username)
+                foreach (var user in ctx.Users)
                 {
-                    return true;
+                    if (user.UserName == username)
+                    {
+                        return true;
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected error: " + e.Message);
+            }
+
             return false;
         }
 
         public static bool ChangeRole(UserContext ctx, string username, string role)
         {
-            User userToChange = null; // Cannot modify collection in foreach.
-            foreach (var user in ctx.Users)
-            {
-                if (user.UserName == username)
-                {
-                    userToChange = user;
-                    break;
-                }
-            }
-
             try
             {
-                userToChange.Role = role;
-                ctx.SaveChanges();
-                return true;
+                User userToChange = null; // Cannot modify collection in foreach.
+                foreach (var user in ctx.Users)
+                {
+                    if (user.UserName == username)
+                    {
+                        userToChange = user;
+                        break;
+                    }
+                }
+
+                try
+                {
+                    userToChange.Role = role;
+                    ctx.SaveChanges();
+                    return true;
+                }
+                catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
+                {
+                    Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
+                }
             }
-            catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
+            catch (Exception e)
             {
-                Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
+                Console.WriteLine("Unexpected error: " + e.Message);
             }
+
             return false;
         }
 
@@ -175,7 +225,7 @@ namespace DistSysACW.Models
             }
             catch (Exception e)
             {
-                Console.WriteLine("LOG ERROR: " + e.Message);
+                Console.WriteLine("Unexpected error: " + e.Message);
             }
         }
         ///.......

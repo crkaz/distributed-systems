@@ -565,6 +565,11 @@ namespace DistSysACWClient
                 Console.WriteLine("You need to do a User Post or User Set first");
             }
         }
+
+        private static void ProtectedAddFifty(string args)
+        {
+
+        }
         #endregion
     }
     #endregion
