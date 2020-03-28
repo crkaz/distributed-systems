@@ -167,9 +167,16 @@ namespace DistSysACW.Models
 
         public static void Log(UserContext ctx, string apiKey, string logString)
         {
-            Log log = new Log(logString);
-            ctx.Logs.Add(log);
-            ctx.SaveChanges();
+            try
+            {
+                Log log = new Log(logString);
+                ctx.Users.Find(apiKey).Logs.Add(log);
+                ctx.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("LOG ERROR: " + e.Message);
+            }
         }
         ///.......
     }
