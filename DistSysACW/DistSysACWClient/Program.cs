@@ -17,8 +17,8 @@ namespace DistSysACWClient
     #region Task 10 and beyond
     class Client
     {
-        //const string HOST = "https://localhost:44307/api/";
-        const string HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
+        const string HOST = "https://localhost:44307/api/";
+        //const string HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
         static readonly HttpClient client = new HttpClient();
 
         private static string ApiKey { get; set; }
@@ -87,18 +87,8 @@ namespace DistSysACWClient
 
             }
         }
-        private string HashToString(byte[] hash)
-        {
-            string hexString = "";
-            if (hash != null)
-            {
-                foreach (byte b in hash)
-                {
-                    hexString += b.ToString("x2");
-                }
-            }
-            return hexString;
-        }
+
+
 
         #region API Utils
         private static void GetEndpoint(string endpoint)
@@ -244,6 +234,8 @@ namespace DistSysACWClient
         }
         #endregion
 
+
+
         #region Client API
         private static void TalkbackHello()
         {
@@ -285,7 +277,9 @@ namespace DistSysACWClient
                 Console.WriteLine("Invalid arguments.");
             }
         }
+
         //-------------------------
+
         private static void UserGet(string args)
         {
             string endpoint = "User/New";
@@ -408,28 +402,30 @@ namespace DistSysACWClient
                     string role = nameAndRole[1];
 
                     body = "{\"username\":\"" + username + "\", \"role\":\"" + role + "\"}";
+
+                    // Configure response action.
+                    async void Response(HttpResponseMessage response)
+                    {
+                        string resultContent = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(resultContent);
+                    }
+                    Action<HttpResponseMessage> onResponse = new Action<HttpResponseMessage>(response => Response(response));
+
+                    PostEndpoint(endpoint, body, onResponse, true);
                 }
                 catch
                 {
                     Console.WriteLine("Invalid arguments.");
                 }
-
-                // Configure response action.
-                async void Response(HttpResponseMessage response)
-                {
-                    string resultContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(resultContent);
-                }
-                Action<HttpResponseMessage> onResponse = new Action<HttpResponseMessage>(response => Response(response));
-
-                PostEndpoint(endpoint, body, onResponse, true);
             }
             else
             {
                 Console.WriteLine("You need to do a User Post or User Set first");
             }
         }
+
         //-------------------------
+
         private static void ProtectedHello()
         {
             string endpoint = "Protected/Hello";

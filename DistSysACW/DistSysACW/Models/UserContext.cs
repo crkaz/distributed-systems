@@ -1,17 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DistSysACW.Models
 {
     public class UserContext : DbContext
     {
-        public UserContext() : base()
-        {
-
-        }
+        public UserContext() : base() { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Log> Logs { get; set; }
@@ -20,7 +13,9 @@ namespace DistSysACW.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseLazyLoadingProxies(); // Enable lazy loading.
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DistSysACW;");
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }
