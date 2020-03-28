@@ -29,7 +29,7 @@ namespace DistSysACW.Middleware
             if (context.Request.Headers.TryGetValue(apiKeyHeader, out var headerValues))
             {
                 apiKey = headerValues.FirstOrDefault(); // Extract from headerValues array.
-                bool keyExists = UserDatabaseAccess.LookupApiKey(apiKey);
+                bool keyExists = UserDatabaseAccess.TEMPLookupApiKey(dbContext, apiKey);
 
                 if (keyExists)
                 {

@@ -77,6 +77,17 @@ namespace DistSysACW.Models
                 return false;
             }
         }
+        public static bool TEMPLookupApiKey(UserContext ctx, string apiKey)
+        {
+            foreach (var user in ctx.Users)
+            {
+                if (user.ApiKey == apiKey)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         // 3. Check if a user with a given ApiKey and UserName exists in the database, returning true or false.
         /// Could be combined with method 2.
@@ -98,8 +109,6 @@ namespace DistSysACW.Models
         // 4. Check if a user with a given ApiKey string exists in the database, returning the User object.
         public static User GetUserByApiKey(UserContext ctx, string apiKey)
         {
-            //using (var ctx = new UserContext())
-            //{
             foreach (var user in ctx.Users)
             {
                 if (user.ApiKey == apiKey)
@@ -108,7 +117,6 @@ namespace DistSysACW.Models
                 }
             }
             return null;
-            //}
         }
 
         // 5. Delete a user with a given ApiKey from the database.
