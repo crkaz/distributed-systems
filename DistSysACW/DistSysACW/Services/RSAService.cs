@@ -60,7 +60,7 @@ namespace DistSysACW
         public string Decrypt(string hex)
         {
             byte[] encryption = hex.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
-            byte[] decrypted = RSA.Decrypt(encryption, true);
+            byte[] decrypted = RSA.Decrypt(encryption, false);
             var val = Encoding.ASCII.GetString(decrypted);
 
             return val;

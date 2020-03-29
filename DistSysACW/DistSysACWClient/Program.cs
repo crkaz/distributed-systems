@@ -1,16 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using CoreExtensions;
 using System.Globalization;
+using System.IO;
 
 namespace DistSysACWClient
 {
@@ -28,6 +24,7 @@ namespace DistSysACWClient
         static void Main(string[] args)
         {
             client.BaseAddress = new Uri(HOST);
+
             Console.WriteLine("Hello. What would you like to do?");
             while (true)
             {
@@ -40,51 +37,58 @@ namespace DistSysACWClient
 
         private static void HandleRequest(string input)
         {
-            Console.WriteLine("...please wait...");
-
-            if (!string.IsNullOrWhiteSpace(input))
+            try
             {
-                if (input == "Exit")
-                {
-                    Environment.Exit(0);
-                }
+                Console.WriteLine("...please wait...");
 
-                string[] split = input.Split(' ');
-
-                if (split.Length < 2)
+                if (!string.IsNullOrWhiteSpace(input))
                 {
-                    Console.WriteLine("Invalid input.");
-                }
-                else
-                {
-                    string cmd = split[0] + " " + split[1];
-                    string args = "";
-                    try
+                    if (input == "Exit")
                     {
-                        args = input.Substring(cmd.Length + 1); // Get everything after 2 first words + a space.
+                        Environment.Exit(0);
                     }
-                    catch
-                    { } // No args.
 
-                    switch (cmd)
+                    string[] split = input.Split(' ');
+
+                    if (split.Length < 2)
                     {
-                        case "Talkback Hello": TalkbackHello(); break;
-                        case "Talkback Sort": TalkbackSort(args); break;
-                        case "User Get": UserGet(args); break;
-                        case "User Post": UserPost(args); break;
-                        case "User Set": UserSet(args); break;
-                        case "User Delete": UserDelete(args); break;
-                        case "User Role": UserRole(args); break;
-                        case "Protected Hello": ProtectedHello(); break;
-                        case "Protected SHA1": ProtectedSHA1(args); break;
-                        case "Protected SHA256": ProtectedSHA256(args); break;
-                        case "Protected Get"/*PublicKey*/: ProtectedGetPublicKey(); break;
-                        case "Protected Sign": ProtectedSign(args); break;
-                        case "Protected AddFifty": ProtectedAddFifty(args); break;
-                        default: Console.WriteLine("Unknown command."); break;
+                        Console.WriteLine("Invalid input.");
                     }
-                }
+                    else
+                    {
+                        string cmd = split[0] + " " + split[1];
+                        string args = "";
+                        try
+                        {
+                            args = input.Substring(cmd.Length + 1); // Get everything after 2 first words + a space.
+                        }
+                        catch
+                        { } // No args.
 
+                        switch (cmd)
+                        {
+                            case "Talkback Hello": TalkbackHello(); break;
+                            case "Talkback Sort": TalkbackSort(args); break;
+                            case "User Get": UserGet(args); break;
+                            case "User Post": UserPost(args); break;
+                            case "User Set": UserSet(args); break;
+                            case "User Delete": UserDelete(); break;
+                            case "User Role": UserRole(args); break;
+                            case "Protected Hello": ProtectedHello(); break;
+                            case "Protected SHA1": ProtectedSHA1(args); break;
+                            case "Protected SHA256": ProtectedSHA256(args); break;
+                            case "Protected Get"/*PublicKey*/: ProtectedGetPublicKey(); break;
+                            case "Protected Sign": ProtectedSign(args); break;
+                            case "Protected AddFifty": ProtectedAddFifty(args); break;
+                            default: Console.WriteLine("Unknown command."); break;
+                        }
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected error: " + e.Message);
             }
         }
 
@@ -113,7 +117,7 @@ namespace DistSysACWClient
             }
         }
 
-        private static string GetGetEndpoint(string endpoint)
+        private static string GetGetEndpoint(string endpoint, bool writeErrors = true)
         {
             try
             {
@@ -233,29 +237,113 @@ namespace DistSysACWClient
             }
         }
 
-        private static string Encrypt(string args)
+        private static string RSAEncrypt(string args)
         {
-            using (var rsa = new RSACryptoServiceProvider())
+            try
             {
-                rsa.FromXmlStringCore22(ServerKey);
-                byte[] asciiByteMessage = Encoding.ASCII.GetBytes(args); // Original message, encoded.
-                byte[] encryption = rsa.Encrypt(asciiByteMessage, true);
-                string encryptedString = BitConverter.ToString(encryption);
+                using (var rsa = new RSACryptoServiceProvider())
+                {
+                    rsa.FromXmlStringCore22(ServerKey);
+                    byte[] asciiByteMessage = Encoding.ASCII.GetBytes(args); // Original message, encoded.
+                    byte[] encryption = rsa.Encrypt(asciiByteMessage, false);
+                    string encryptedString = BitConverter.ToString(encryption);
 
-                return encryptedString;
+                    return encryptedString;
+                }
+            }
+            catch
+            {
+                return null;
             }
         }
 
-        private static bool VerifySigning(string original, string signed)
+        private static byte[] HexStringToByteArr(string hex)
         {
-            using (var rsa = new RSACryptoServiceProvider())
+            try
             {
-                byte[] signedBytes = signed.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
-                byte[] asciiByteMessage = Encoding.ASCII.GetBytes(original); // Original message, encoded.
-                rsa.FromXmlStringCore22(ServerKey);
-                bool verified = rsa.VerifyData(asciiByteMessage, new SHA1CryptoServiceProvider(), signedBytes);
+                return hex.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
-                return verified;
+        private static bool VerifyRSASigning(string original, string signed)
+        {
+            try
+            {
+                using (var rsa = new RSACryptoServiceProvider())
+                {
+                    byte[] signedBytes = HexStringToByteArr(signed);
+                    byte[] asciiByteMessage = Encoding.ASCII.GetBytes(original); // Original message, encoded.
+                    rsa.FromXmlStringCore22(ServerKey);
+                    bool verified = rsa.VerifyData(asciiByteMessage, new SHA1CryptoServiceProvider(), signedBytes);
+
+                    return verified;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static byte[] AESEncrypt(string args, byte[] key, byte[] iv)
+        {
+            try
+            {
+                byte[] encryptedMessageBytes;
+                using (var aes = new AesCryptoServiceProvider())
+                {
+                    ICryptoTransform encryptor = aes.CreateEncryptor(key, iv);
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                        {
+                            using (StreamWriter sw = new StreamWriter(cs))
+                            {
+                                sw.Write(args);
+                            }
+                            encryptedMessageBytes = ms.ToArray();
+                        }
+                    }
+                }
+
+                return encryptedMessageBytes;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static string AESDecrypt(byte[] args, byte[] key, byte[] iv)
+        {
+            try
+            {
+                string plaintext;
+                using (var aes = new AesCryptoServiceProvider())
+                {
+                    ICryptoTransform decryptor = aes.CreateDecryptor(key, iv);
+                    using (MemoryStream ms = new MemoryStream(args))
+                    {
+                        using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                        {
+                            using (StreamReader sr = new StreamReader(cs))
+                            {
+                                plaintext = sr.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+
+                return plaintext;
+            }
+            catch
+            {
+                return null;
             }
         }
         #endregion
@@ -308,7 +396,7 @@ namespace DistSysACWClient
 
         private static void UserGet(string args)
         {
-            string endpoint = "User/New";
+            string endpoint = "User/New?username?" + args;
             GetEndpoint(endpoint);
         }
 
@@ -380,7 +468,7 @@ namespace DistSysACWClient
             }
         }
 
-        private static void UserDelete(string args)
+        private static void UserDelete()
         {
             string endpoint = "User/RemoveUser?username=";
             bool usernameSet = !string.IsNullOrWhiteSpace(Username);
@@ -564,7 +652,7 @@ namespace DistSysACWClient
                 {
                     string signedString = GetGetEndpoint(endpoint); // Signed data HH-HH-HH...
 
-                    bool verified = VerifySigning(args, signedString);
+                    bool verified = VerifyRSASigning(args, signedString);
 
                     if (verified)
                     {
@@ -598,16 +686,47 @@ namespace DistSysACWClient
 
                 if (publicKeySet)
                 {
-                    // Parse args.
+                    try
+                    {
+                        int resultInt;
+                        bool validArgs = int.TryParse(args, out resultInt);
+                        if (validArgs)
+                        {
+                            // Initialise Aes key and iv for the request.
+                            AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
+                            aes.GenerateKey();
+                            aes.GenerateIV();
+                            string keyst = BitConverter.ToString(aes.Key);
+                            string ivst = BitConverter.ToString(aes.IV);
 
-                    // do int
-                    endpoint += "?encryptedInteger=" + Encrypt(args);
-                    // need to do aes
-                    endpoint += "&encryptedSymKey=" + Encrypt(args);
-                    // need to do iv
-                    endpoint += "&encryptedIV=" + Encrypt(args);
+                            endpoint += "?encryptedInteger=" + RSAEncrypt(args);
+                            endpoint += "&encryptedSymKey=" + RSAEncrypt(keyst);
+                            endpoint += "&encryptedIV=" + RSAEncrypt(ivst);
 
-                    GetEndpoint(endpoint);
+                            string response = GetGetEndpoint(endpoint, false);
+                            byte[] responseByte = HexStringToByteArr(response);
+
+                            string result = AESDecrypt(responseByte, aes.Key, aes.IV);
+
+                            bool isInt = int.TryParse(result, out resultInt);
+                            if (isInt)
+                            {
+                                Console.WriteLine(result);
+                            }
+                            else
+                            {
+                                throw new Exception("Result was not an integer."); // Caught by trycatch for desired response.
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("A valid integer must be given!");
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("An error occurred!");
+                    }
                 }
                 else
                 {

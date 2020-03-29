@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using DistSysACW.Models;
+using System.IO;
+using System.Linq;
+using System.Globalization;
+using System;
 
 namespace DistSysACW.Controllers
 {
@@ -132,33 +136,26 @@ namespace DistSysACW.Controllers
             UserDatabaseAccess.Log(_context, apiKey, "/Protected/AddFifty");
 
             bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
+
             if (apiKeyInDb)
             {
-                var v1 = RSAService.Instance.Decrypt(encryptedInteger);
-                var v2 = RSAService.Instance.Decrypt(encryptedSymKey);
-                var v3 = RSAService.Instance.Decrypt(encryptedIV);
-                //string key = RSAService.Instance.GetPublicKey();
+                try
+                {
+                    string msg = RSAService.Instance.Decrypt(encryptedInteger);
+                    string keyStr = RSAService.Instance.Decrypt(encryptedSymKey);
+                    string ivStr = RSAService.Instance.Decrypt(encryptedIV);
+                    byte[] key = HexStringToByteArr(keyStr);
+                    byte[] iv = HexStringToByteArr(ivStr);
+                    int val = int.Parse(msg) + 50;
+                    byte[] valBytes = AESEncrypt(val.ToString(), key, iv);
+                    string result = BitConverter.ToString(valBytes);
 
-                //string signedString = GetGetEndpoint(endpoint); // Signed data HH-HH-HH...
-                //byte[] signedBytes = signedString.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
-
-                //using (var rsa = new RSACryptoServiceProvider())
-                //{
-                //    rsa.FromXmlStringCore22(ServerKey);
-                //    byte[] asciiByteMessage = Encoding.ASCII.GetBytes(args); // Original message, encoded.
-
-                //    bool verified = rsa.VerifyData(asciiByteMessage, new SHA1CryptoServiceProvider(), signedBytes);
-
-                //    if (verified)
-                //    {
-                //        Console.WriteLine("Message was successfully signed");
-                //    }
-                //    else
-                //    {
-                //        Console.WriteLine("Message was not successfully signed");
-                //    }
-                //}
-
+                    return Ok(result);
+                }
+                catch
+                {
+                    return BadRequest("Bad Request");
+                }
             }
 
             return Unauthorized("Unauthorized. Check ApiKey in Header is correct.");
@@ -176,6 +173,34 @@ namespace DistSysACW.Controllers
                 }
             }
             return hexString;
+        }
+
+        private byte[] HexStringToByteArr(string hex)
+        {
+            return hex.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
+        }
+
+        private byte[] AESEncrypt(string args, byte[] key, byte[] iv)
+        {
+            byte[] encryptedMessageBytes;
+            using (var aes = new AesCryptoServiceProvider())
+            {
+                ICryptoTransform encryptor = aes.CreateEncryptor(key, iv);
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter sw = new StreamWriter(cs))
+                        {
+                            sw.Write(args);
+                        }
+                        encryptedMessageBytes = ms.ToArray();
+                    }
+                }
+            }
+
+            return encryptedMessageBytes;
         }
         #endregion
     }
