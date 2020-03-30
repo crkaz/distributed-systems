@@ -19,22 +19,10 @@ namespace DistSysACW.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DistSysACW.Models.Archive", b =>
-                {
-                    b.Property<string>("ApiKey")
-                        .ValueGeneratedOnAdd();
-
-                    b.HasKey("ApiKey");
-
-                    b.ToTable("ArchivedLogs");
-                });
-
             modelBuilder.Entity("DistSysACW.Models.Log", b =>
                 {
                     b.Property<string>("LogId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ArchiveApiKey");
 
                     b.Property<DateTime>("LogDateTime");
 
@@ -43,8 +31,6 @@ namespace DistSysACW.Migrations
                     b.Property<string>("UserApiKey");
 
                     b.HasKey("LogId");
-
-                    b.HasIndex("ArchiveApiKey");
 
                     b.HasIndex("UserApiKey");
 
@@ -67,10 +53,6 @@ namespace DistSysACW.Migrations
 
             modelBuilder.Entity("DistSysACW.Models.Log", b =>
                 {
-                    b.HasOne("DistSysACW.Models.Archive")
-                        .WithMany("Logs")
-                        .HasForeignKey("ArchiveApiKey");
-
                     b.HasOne("DistSysACW.Models.User")
                         .WithMany("Logs")
                         .HasForeignKey("UserApiKey");

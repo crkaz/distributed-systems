@@ -34,7 +34,7 @@ namespace DistSysACW.Controllers
 
         //https://localhost:44307/api/talkback/sort?integers[0]=1&integers[1]=3&integers[2]=2
         [ActionName("Sort")]
-        public IActionResult Get([FromQuery]int[] integers)
+        public IActionResult Get([FromQuery]string[] integers)
         {
             #region TASK1
             // TODO: 
@@ -48,8 +48,30 @@ namespace DistSysACW.Controllers
 
             //return BadRequest("ERR 400: Bad Request\nAn array of integers was not provided.");
             // Automatically returns code400 if bad request: do we need to alter?
-            Array.Sort(integers);
-            return Ok(integers);
+            List<int> converted = new List<int>();
+            foreach (string s in integers)
+            {
+                try
+                {
+                    converted.Add(int.Parse(s));
+
+                }
+                catch
+                {
+                    return BadRequest("Bad Request");
+                }
+            }
+
+            try
+            {
+                int[] result = converted.ToArray();
+                Array.Sort(result);
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

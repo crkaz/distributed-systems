@@ -13,6 +13,10 @@ namespace DistSysACW.Models
         {
             optionsBuilder.UseLazyLoadingProxies(); // Enable lazy loading.
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DistSysACW;");
+            //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DistSysACW;", builder =>
+            //{
+            //    builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            //});
             base.OnConfiguring(optionsBuilder);
         }
     }

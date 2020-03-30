@@ -60,7 +60,7 @@ namespace DistSysACW.Controllers
                     byte[] sha1Message = sha1Provider.ComputeHash(byteMessage);
                     string sha1HashString = HashToString(sha1Message);
 
-                    return Ok(sha1HashString);
+                    return Ok(sha1HashString.ToUpper()); // ToUpper simply to match test server.
                 }
             }
 
@@ -88,7 +88,7 @@ namespace DistSysACW.Controllers
                     byte[] sha256Message = sha256Provider.ComputeHash(byteMessage);
                     string sha256HashString = HashToString(sha256Message);
 
-                    return Ok(sha256HashString);
+                    return Ok(sha256HashString.ToUpper()); // ToUpper simply to match test server.
                 }
             }
 
@@ -154,7 +154,7 @@ namespace DistSysACW.Controllers
                 }
                 catch
                 {
-                    return BadRequest("Bad Request");
+                    return BadRequest("Bad Request"); // Doesn't specify a message.
                 }
             }
 

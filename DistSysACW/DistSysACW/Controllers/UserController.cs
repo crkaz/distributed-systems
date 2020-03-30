@@ -19,18 +19,21 @@ namespace DistSysACW.Controllers
         [ActionName("New")]
         public IActionResult Get([FromQuery] string username)
         {
-            // localhost:< portnumber >/api/user/new?username=UserOne
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return Ok("\"False - User Does Not Exist! Did you mean to do a POST to create a new user?\"");
+            }
             bool usernameTaken = UserDatabaseAccess.CheckUsernameExists(_context, username);
 
             try
             {
-                if (String.IsNullOrWhiteSpace(username) || !usernameTaken) /*user with the username ‘UserOne’ does not exist in the database*/
+                if (!usernameTaken) /*user with the username ‘UserOne’ does not exist in the database*/
                 {
-                    return Ok("False - User Does Not Exist! Did you mean to do a POST to create a new user?");
+                    return Ok("\"False - User Does Not Exist! Did you mean to do a POST to create a new user?\"");
                 }
                 else if (usernameTaken) /*user with the username ‘UserOne’ exists in the database*/
                 {
-                    return Ok("True - User Does Exist! Did you mean to do a POST to create a new user?");
+                    return Ok("\"True - User Does Exist! Did you mean to do a POST to create a new user?\"");
                 }
             }
             catch
@@ -45,8 +48,8 @@ namespace DistSysACW.Controllers
         public IActionResult Post([FromBody] string json)
         {
             // localhost:< portnumber >/ api / user / new with “UserOne” in the body of the request
-            bool jsonIsEmpty = string.IsNullOrWhiteSpace(json.ToString());
-            bool usernameExists = UserDatabaseAccess.CheckUsernameExists(_context, json.ToString());
+            bool jsonIsEmpty = string.IsNullOrWhiteSpace(json);
+            bool usernameExists = UserDatabaseAccess.CheckUsernameExists(_context, json);
 
             if (jsonIsEmpty)
             {
@@ -71,7 +74,7 @@ namespace DistSysACW.Controllers
                 // to the client with a status code of OK(200). If this is the first user they should be saved as Admin role,
                 // otherwise just with User role.
                 #endregion
-                string apiKey = UserDatabaseAccess.CreateUser(_context, json.ToString());
+                string apiKey = UserDatabaseAccess.CreateUser(_context, json);
                 return Ok(apiKey);
             }
         }

@@ -50,7 +50,7 @@ namespace DistSysACW.Models
                 User user = new User() { ApiKey = apiKey, Role = userRole, UserName = username };
 
                 // FROM TASK 4:
-                // ...If this is the first user they should be saved as Admin role otherwise just with User role.
+                // ...If this is the first user they should be saved as Admin role otherwise just with User role
                 if (ctx.Users.Count() == 0)
                 {
                     user.Role = Enum.GetName(typeof(User.UserRole), User.UserRole.Admin);
