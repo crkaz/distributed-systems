@@ -8,6 +8,7 @@ namespace DistSysACW.Models
 
         public DbSet<User> Users { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<ArchivedLog> ArchivedLogs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

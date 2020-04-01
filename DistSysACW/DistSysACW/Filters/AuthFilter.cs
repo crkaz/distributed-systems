@@ -26,10 +26,12 @@ namespace DistSysACW.Filters
                     {
                         if (context.HttpContext.User.IsInRole(role))
                         {
+                            // OK if the user claimed role is one of those specified in roles.
                             return;
                         }
                         else if (roles.Count() == 1 && roles[0] == "Admin")
                         {
+                            // If the user claimed role is NOT in the specified in role and that role is ADMIN.
                             unauthResponse = "Unauthorized. Admin access only.";
                         }
                     }

@@ -19,6 +19,28 @@ namespace DistSysACW.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("DistSysACW.Models.ArchivedLog", b =>
+                {
+                    b.Property<string>("LogId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ArchiveDateTime");
+
+                    b.Property<DateTime>("LogDateTime");
+
+                    b.Property<string>("LogString");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("UserApiKey");
+
+                    b.HasKey("LogId");
+
+                    b.ToTable("ArchivedLogs");
+                });
+
             modelBuilder.Entity("DistSysACW.Models.Log", b =>
                 {
                     b.Property<string>("LogId")
@@ -27,6 +49,10 @@ namespace DistSysACW.Migrations
                     b.Property<DateTime>("LogDateTime");
 
                     b.Property<string>("LogString");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("UserApiKey");
 
@@ -43,6 +69,10 @@ namespace DistSysACW.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Role");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("UserName");
 

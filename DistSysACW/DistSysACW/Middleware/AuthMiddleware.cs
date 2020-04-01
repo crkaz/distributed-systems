@@ -21,7 +21,6 @@ namespace DistSysACW.Middleware
             // TODO:  Find if a header ‘ApiKey’ exists, and if it does, check the database to determine if the given API Key is valid
             //        Then set the correct roles for the User, using claims
             #endregion
-
             const string apiKeyHeader = "ApiKey";
             string apiKey = string.Empty;
             if (context.Request.Headers.TryGetValue(apiKeyHeader, out var headerValues))
@@ -32,7 +31,7 @@ namespace DistSysACW.Middleware
                 if (keyExists)
                 {
                     User user = UserDatabaseAccess.GetUserByApiKey(dbContext, apiKey);
- 
+
                     Claim[] claims =
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
@@ -44,7 +43,7 @@ namespace DistSysACW.Middleware
                 }
 
             }
-            
+
             await _next(context);
         }
 

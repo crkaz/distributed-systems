@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DistSysACW.Facades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DistSysACW.Models
 {
@@ -23,6 +22,8 @@ namespace DistSysACW.Models
         public string UserName { get; set; }
         public string Role { get; set; }
         public virtual ICollection<Log> Logs { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
 
         public User() { }
     }
@@ -134,32 +135,20 @@ namespace DistSysACW.Models
         // 5. Delete a user with a given ApiKey from the database.
         public static bool DeleteUserByApiKey(UserContext ctx, string apiKey)
         {
-            try
+            bool success =
+            DbAccessFacade.ModifyDb(() =>
             {
                 User userToDelete = ctx.Users.Find(apiKey);
 
                 if (userToDelete != null)
                 {
-                    try
-                    {
-                        //Archive archive = new Archive() { ApiKey = apiKey, Logs = userToDelete.Logs };
-                        //ctx.ArchivedLogs.Add(archive);
-                        ctx.Users.Remove(userToDelete);
-                        ctx.SaveChanges();
-                        return true;
-                    }
-                    catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
-                    {
-                        Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
-                    }
+                    ArchiveDatabaseAcess.ArchiveUser(ctx, userToDelete);
+                    ctx.Users.Remove(userToDelete);
+                    ctx.SaveChanges();
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Unexpected error.");
-            }
+            });
 
-            return false;
+            return success;
         }
 
         // 6. Etc…
@@ -186,49 +175,35 @@ namespace DistSysACW.Models
 
         public static bool ChangeRole(UserContext ctx, string username, string role)
         {
-            try
-            {
-                User userToChange = null; // Cannot modify collection in foreach.
-                foreach (var user in ctx.Users)
-                {
-                    if (user.UserName == username)
-                    {
-                        userToChange = user;
-                        break;
-                    }
-                }
+            bool success = DbAccessFacade.ModifyDb(() =>
+             {
+                 User userToChange = null; // Cannot modify collection in foreach.
+                 foreach (var user in ctx.Users)
+                 {
+                     if (user.UserName == username)
+                     {
+                         userToChange = user;
+                         break;
+                     }
+                 }
 
-                try
-                {
-                    userToChange.Role = role;
-                    ctx.SaveChanges();
-                    return true;
-                }
-                catch (DbUpdateConcurrencyException) // Manage optimistic concurrency conflict.
-                {
-                    Console.WriteLine("Failed to fulfil action: database was modified by somebody else");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Unexpected error: " + e.Message);
-            }
+                 userToChange.Role = role;
+                 ctx.SaveChanges();
+             });
 
-            return false;
+            return success;
         }
 
         public static void Log(UserContext ctx, string apiKey, string logString)
         {
-            try
-            {
-                Log log = new Log(logString);
-                ctx.Users.Find(apiKey).Logs.Add(log);
-                ctx.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Unexpected error: " + e.Message);
-            }
+            #region MOVED INTO LOGGING MIDDLEWARE.
+            //DbAccessFacade.ModifyDb(() =>
+            //{
+            //    Log log = new Log(logString);
+            //    ctx.Users.Find(apiKey).Logs.Add(log);
+            //    ctx.SaveChanges();
+            //});
+            #endregion
         }
         ///.......
     }
