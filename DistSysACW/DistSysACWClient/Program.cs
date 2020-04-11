@@ -7,8 +7,6 @@ using Newtonsoft.Json;
 using CoreExtensions;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace DistSysACWClient
 {
@@ -37,6 +35,10 @@ namespace DistSysACWClient
             }
         }
 
+        /// <summary>
+        /// Parse console input to derive command and arguments.
+        /// </summary>
+        /// <param name="input"></param>
         private static void HandleRequest(string input)
         {
             try
@@ -705,10 +707,10 @@ namespace DistSysACWClient
                             endpoint += "&encryptedSymKey=" + RSAEncrypt(keyst);
                             endpoint += "&encryptedIV=" + RSAEncrypt(ivst);
 
-                            string response = GetGetEndpoint(endpoint, false);
-                            byte[] responseByte = HexStringToByteArr(response);
+                            string response = GetGetEndpoint(endpoint, false); // Get server response.
+                            byte[] responseByte = HexStringToByteArr(response); // Conver response to byte array.
 
-                            string result = AESDecrypt(responseByte, aes.Key, aes.IV);
+                            string result = AESDecrypt(responseByte, aes.Key, aes.IV); // AES decrypt response.
 
                             bool isInt = int.TryParse(result, out resultInt);
                             if (isInt)

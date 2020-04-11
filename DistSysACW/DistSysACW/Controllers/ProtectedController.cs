@@ -136,19 +136,18 @@ namespace DistSysACW.Controllers
             UserDatabaseAccess.Log(_context, apiKey, "/Protected/AddFifty");
 
             bool apiKeyInDb = UserDatabaseAccess.LookupApiKey(_context, apiKey);
-
             if (apiKeyInDb)
             {
                 try
                 {
-                    string msg = RSAService.Instance.Decrypt(encryptedInteger);
-                    string keyStr = RSAService.Instance.Decrypt(encryptedSymKey);
-                    string ivStr = RSAService.Instance.Decrypt(encryptedIV);
-                    byte[] key = HexStringToByteArr(keyStr);
-                    byte[] iv = HexStringToByteArr(ivStr);
-                    int val = int.Parse(msg) + 50;
-                    byte[] valBytes = AESEncrypt(val.ToString(), key, iv);
-                    string result = BitConverter.ToString(valBytes);
+                    string msg = RSAService.Instance.Decrypt(encryptedInteger); // RSA decrypt to get original message.
+                    string keyStr = RSAService.Instance.Decrypt(encryptedSymKey); // RSA decrypt to get AES key.
+                    string ivStr = RSAService.Instance.Decrypt(encryptedIV); // RSA decrypt to get AES IV.
+                    byte[] key = HexStringToByteArr(keyStr); // Convert AES key string into byte array.
+                    byte[] iv = HexStringToByteArr(ivStr); // Convert AES IV string into byte array.
+                    int val = int.Parse(msg) + 50; // Add fifty to original value in message.
+                    byte[] valBytes = AESEncrypt(val.ToString(), key, iv); // Encrypt new value with passed AES key.
+                    string result = BitConverter.ToString(valBytes); // Convert new value into string to return.
 
                     return Ok(result);
                 }
