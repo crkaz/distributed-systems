@@ -7,14 +7,15 @@ using Newtonsoft.Json;
 using CoreExtensions;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace DistSysACWClient
 {
     #region Task 10 and beyond
     class Client
     {
-        const string HOST = "https://localhost:44307/api/";
-        //const string HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
+        //const string HOST = "https://localhost:44307/api/";
+        const string HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
         static readonly HttpClient client = new HttpClient();
 
         private static string ApiKey { get; set; }
@@ -24,6 +25,13 @@ namespace DistSysACWClient
         static void Main(string[] args)
         {
             client.BaseAddress = new Uri(HOST);
+
+            // DELETE
+            ApiKey = "00746e7e-68c3-4dcf-9063-156bcba4018e";
+            //ApiKey = "Admin";
+            PutApiKeyInHeader();
+            ProtectedGetPublicKey();
+            //
 
             Console.WriteLine("Hello. What would you like to do?");
             while (true)
@@ -87,7 +95,6 @@ namespace DistSysACWClient
                             default: Console.WriteLine("Unknown command."); break;
                         }
                     }
-
                 }
             }
             catch (Exception e)
@@ -121,27 +128,19 @@ namespace DistSysACWClient
             }
         }
 
-        private static string GetGetEndpoint(string endpoint, bool writeErrors = true)
+        private static string GetGetEndpoint(string endpoint)
         {
-            try
+            string response = null;
+
+            Task.Run(async () =>
             {
-                try
-                {
-                    var worker = client.GetStringAsync(endpoint);
-                    var response = worker.GetAwaiter().GetResult();
-                    worker.Wait();
-                    return response;
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            catch (Exception e) // Catch anything else unexpected.
-            {
-                Console.WriteLine(e.Message);
-            }
-            return null;
+                var worker = await client.GetAsync(endpoint);
+                //var response = worker.GetAwaiter();//.GetResult();
+                response = await worker.Content.ReadAsStringAsync();
+
+            }).Wait();
+
+            return response;
         }
 
         private static string GetEndpoint(string endpoint, string successResponse, string errorResponse)
@@ -241,22 +240,22 @@ namespace DistSysACWClient
             }
         }
 
-        private static string RSAEncrypt(string args)
+        static public string RSAEncrypt(byte[] DataToEncrypt)
         {
             try
             {
-                using (var rsa = new RSACryptoServiceProvider())
+                byte[] encryptedData;
+                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
                 {
                     rsa.FromXmlStringCore22(ServerKey);
-                    byte[] asciiByteMessage = Encoding.ASCII.GetBytes(args); // Original message, encoded.
-                    byte[] encryption = rsa.Encrypt(asciiByteMessage, false);
-                    string encryptedString = BitConverter.ToString(encryption);
-
-                    return encryptedString;
+                    encryptedData = rsa.Encrypt(DataToEncrypt, false);
                 }
+
+                return ByteArrayToHexString(encryptedData);
             }
-            catch
+            catch (CryptographicException e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
@@ -277,15 +276,15 @@ namespace DistSysACWClient
         {
             try
             {
+                bool verified = false;
                 using (var rsa = new RSACryptoServiceProvider())
                 {
                     byte[] signedBytes = HexStringToByteArr(signed);
                     byte[] asciiByteMessage = Encoding.ASCII.GetBytes(original); // Original message, encoded.
                     rsa.FromXmlStringCore22(ServerKey);
-                    bool verified = rsa.VerifyData(asciiByteMessage, new SHA1CryptoServiceProvider(), signedBytes);
-
-                    return verified;
+                    verified = rsa.VerifyData(asciiByteMessage, new SHA1CryptoServiceProvider(), signedBytes);
                 }
+                return verified;
             }
             catch
             {
@@ -634,6 +633,7 @@ namespace DistSysACWClient
                 PutApiKeyInHeader();
                 string successMsg = "Got Public Key";
                 string errorMsg = "Couldn’t Get the Public Key";
+
                 ServerKey = GetEndpoint(endpoint, successMsg, errorMsg);
             }
             else
@@ -678,6 +678,29 @@ namespace DistSysACWClient
             }
         }
 
+        //
+        static string ByteArrayToHexString(byte[] byteArray, bool includeHyphen = true)
+        {
+            string hexString = "";
+            if (null != byteArray)
+            {
+                int i = 0;
+                foreach (byte b in byteArray)
+                {
+                    hexString += b.ToString("x2");
+
+                    // Add hyphen after all but final hex pair.
+                    if (includeHyphen && i++ < byteArray.Length - 1)
+                    {
+                        hexString += "-";
+                    }
+                }
+            }
+
+            return hexString.ToUpper();
+        }
+        //
+
         private static void ProtectedAddFifty(string args)
         {
             string endpoint = "Protected/AddFifty";
@@ -700,15 +723,13 @@ namespace DistSysACWClient
                             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
                             aes.GenerateKey();
                             aes.GenerateIV();
-                            string keyst = BitConverter.ToString(aes.Key);
-                            string ivst = BitConverter.ToString(aes.IV);
 
-                            endpoint += "?encryptedInteger=" + RSAEncrypt(args);
-                            endpoint += "&encryptedSymKey=" + RSAEncrypt(keyst);
-                            endpoint += "&encryptedIV=" + RSAEncrypt(ivst);
+                            endpoint += "?encryptedInteger=" + RSAEncrypt(Encoding.ASCII.GetBytes(args));
+                            endpoint += "&encryptedSymKey=" + RSAEncrypt(aes.Key);
+                            endpoint += "&encryptedIV=" + RSAEncrypt(aes.IV);
 
-                            string response = GetGetEndpoint(endpoint, false); // Get server response.
-                            byte[] responseByte = HexStringToByteArr(response); // Conver response to byte array.
+                            string response = GetGetEndpoint(endpoint); // Get server response.
+                            byte[] responseByte = HexStringToByteArr(response); // Convert response to byte array.
 
                             string result = AESDecrypt(responseByte, aes.Key, aes.IV); // AES decrypt response.
 
@@ -727,7 +748,7 @@ namespace DistSysACWClient
                             Console.WriteLine("A valid integer must be given!");
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
                         Console.WriteLine("An error occurred!");
                     }

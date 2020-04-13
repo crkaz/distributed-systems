@@ -50,7 +50,7 @@ namespace DistSysACW
 
         public string SignData(string message)
         {
-            byte[] asciiByteMessage = System.Text.Encoding.ASCII.GetBytes(message);
+            byte[] asciiByteMessage = Encoding.ASCII.GetBytes(message);
             byte[] signed = RSA.SignData(asciiByteMessage, new SHA1CryptoServiceProvider());
 
             return BitConverter.ToString(signed);
