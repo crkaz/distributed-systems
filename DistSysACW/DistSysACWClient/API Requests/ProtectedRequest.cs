@@ -144,27 +144,29 @@ namespace DistSysACWClient
                         if (validArgs)
                         {
                             // Initialise Aes key and iv for the request.
-                            AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
-                            aes.GenerateKey();
-                            aes.GenerateIV();
-
-                            endpoint += "?encryptedInteger=" + CryptoOps.RSAEncrypt(Encoding.ASCII.GetBytes(args));
-                            endpoint += "&encryptedSymKey=" + CryptoOps.RSAEncrypt(aes.Key);
-                            endpoint += "&encryptedIV=" + CryptoOps.RSAEncrypt(aes.IV);
-
-                            string response = GetGetEndpoint(endpoint); // Get server response.
-                            byte[] responseByte = CryptoOps.HexStringToByteArr(response); // Convert response to byte array.
-
-                            string result = CryptoOps.AESDecrypt(responseByte, aes.Key, aes.IV); // AES decrypt response.
-
-                            bool isInt = int.TryParse(result, out resultInt);
-                            if (isInt)
+                            using (var aes = new AesCryptoServiceProvider())
                             {
-                                Console.WriteLine(result);
-                            }
-                            else
-                            {
-                                throw new Exception("Result was not an integer."); // Caught by trycatch for desired response.
+                                aes.GenerateKey();
+                                aes.GenerateIV();
+
+                                endpoint += "?encryptedInteger=" + CryptoOps.RSAEncrypt(BitConverter.GetBytes(resultInt));
+                                endpoint += "&encryptedSymKey=" + CryptoOps.RSAEncrypt(aes.Key);
+                                endpoint += "&encryptedIV=" + CryptoOps.RSAEncrypt(aes.IV);
+
+                                string response = GetGetEndpoint(endpoint); // Get server response.
+                                byte[] responseByte = CryptoOps.HexStringToByteArr(response); // Convert response to byte array.
+
+                                string result = CryptoOps.AESDecrypt(responseByte, aes.Key, aes.IV); // AES decrypt response.
+
+                                bool isInt = int.TryParse(result, out resultInt);
+                                if (isInt)
+                                {
+                                    Console.WriteLine(result);
+                                }
+                                else
+                                {
+                                    throw new Exception("Result was not an integer."); // Caught by trycatch for desired response.
+                                }
                             }
                         }
                         else

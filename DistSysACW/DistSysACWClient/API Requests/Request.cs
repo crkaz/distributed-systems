@@ -32,17 +32,25 @@ namespace DistSysACWClient
 
         protected static string GetGetEndpoint(string endpoint)
         {
-            string response = null;
-
-            Task.Run(async () =>
+            try
             {
-                var worker = await Connection.Client.GetAsync(endpoint);
-                //var response = worker.GetAwaiter();//.GetResult();
-                response = await worker.Content.ReadAsStringAsync();
-
-            }).Wait();
-
-            return response;
+                try
+                {
+                    var worker = Connection.Client.GetStringAsync(endpoint);
+                    var response = worker.GetAwaiter().GetResult();
+                    worker.Wait();
+                    return response;
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            catch (Exception e) // Catch anything else unexpected.
+            {
+                Console.WriteLine(e.Message);
+            }
+            return null;
         }
 
         protected static string GetEndpoint(string endpoint, string successResponse, string errorResponse)
@@ -113,7 +121,25 @@ namespace DistSysACWClient
                 }
                 catch (HttpRequestException e)
                 {
-                    //Console.WriteLine("False"); // Unsure which is correct.
+                    Console.WriteLine(e.Message);
+                }
+            }
+            catch (Exception e) // Catch anything else unexpected.
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private void WrapInTryCatch(Action sub)
+        {
+            try
+            {
+                try
+                {
+                    sub.Invoke();
+                }
+                catch (HttpRequestException e)
+                {
                     Console.WriteLine(e.Message);
                 }
             }

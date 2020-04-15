@@ -10,15 +10,15 @@ namespace DistSysACWClient
 {
     class CryptoOps
     {
-        public static string RSAEncrypt(byte[] DataToEncrypt)
+        public static string RSAEncrypt(byte[] bytesToEncrypt)
         {
             try
             {
                 byte[] encryptedData;
-                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+                using (var rsa = new RSACryptoServiceProvider())
                 {
                     rsa.FromXmlStringCore22(Connection.ServerKey);
-                    encryptedData = rsa.Encrypt(DataToEncrypt, false);
+                    encryptedData = rsa.Encrypt(bytesToEncrypt, true);
                 }
 
                 return ByteArrToHexString(encryptedData);
