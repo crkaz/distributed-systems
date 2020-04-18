@@ -57,13 +57,14 @@ namespace DistSysACW
 
         }
 
-        public string Decrypt(string hex)
+        public byte[] Decrypt(string hex)
         {
             byte[] encryption = hex.Split('-').Select(hexStr => byte.Parse(hexStr, NumberStyles.HexNumber)).ToArray(); // Signed data converted back into byte array.
-            byte[] decrypted = RSA.Decrypt(encryption, false);
-            var val = Encoding.ASCII.GetString(decrypted);
+            byte[] decrypted = RSA.Decrypt(encryption, true);
+            //var val = Encoding.ASCII.GetString(decrypted);
+            //var val = BitConverter.ToInt32(decrypted);
 
-            return val;
+            return decrypted;
         }
 
         private string GetPrivateKey()

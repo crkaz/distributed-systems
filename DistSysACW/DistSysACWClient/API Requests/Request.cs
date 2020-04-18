@@ -10,47 +10,24 @@ namespace DistSysACWClient
     {
         protected static void GetEndpoint(string endpoint)
         {
-            try
+            HttpTryCatch(() =>
             {
-                try
-                {
-                    var worker = Connection.Client.GetStringAsync(endpoint);
-                    var response = worker.GetAwaiter().GetResult();
-                    worker.Wait();
-                    Console.WriteLine(response);
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            catch (Exception e) // Catch anything else unexpected.
-            {
-                Console.WriteLine(e.Message);
-            }
+                var worker = Connection.Client.GetStringAsync(endpoint);
+                var response = worker.GetAwaiter().GetResult();
+                worker.Wait();
+                Console.WriteLine(response);
+            });
         }
 
         protected static string GetGetEndpoint(string endpoint)
         {
-            try
-            {
-                try
-                {
-                    var worker = Connection.Client.GetStringAsync(endpoint);
-                    var response = worker.GetAwaiter().GetResult();
-                    worker.Wait();
-                    return response;
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            catch (Exception e) // Catch anything else unexpected.
-            {
-                Console.WriteLine(e.Message);
-            }
-            return null;
+            string response = null;
+
+            var worker = Connection.Client.GetStringAsync(endpoint);
+            response = worker.GetAwaiter().GetResult();
+            worker.Wait();
+
+            return response;
         }
 
         protected static string GetEndpoint(string endpoint, string successResponse, string errorResponse)
@@ -70,82 +47,65 @@ namespace DistSysACWClient
             return null;
         }
 
-        protected static void PostEndpoint(string endpoint, string body, Action<HttpResponseMessage> onResponse, bool jsonObj = false)
+        protected static void PostEndpoint(string endpoint, string body, Action<HttpResponseMessage> responseDelegate, bool jsonObj = false)
         {
-            try
+            HttpTryCatch(() =>
             {
-                try
+                string json = body;
+                if (!jsonObj)
                 {
-                    string json = body;
-                    if (!jsonObj)
-                    {
-                        json = JsonConvert.SerializeObject(body);
-                    }
-
-                    var data = new StringContent(json, Encoding.UTF8, "application/json");
-                    var worker = Connection.Client.PostAsync(endpoint, data);
-                    var response = worker.GetAwaiter().GetResult();
-                    worker.Wait();
-
-                    onResponse.Invoke(response);
+                    json = JsonConvert.SerializeObject(body);
                 }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            catch (Exception e) // Catch anything else unexpected.
-            {
-                Console.WriteLine(e.Message);
-            }
+
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var worker = Connection.Client.PostAsync(endpoint, data);
+                var response = worker.GetAwaiter().GetResult();
+                worker.Wait();
+
+                responseDelegate.Invoke(response);
+            });
         }
 
         protected static void DeleteEndpoint(string endpoint)
         {
-            try
+            HttpTryCatch(() =>
             {
-                try
-                {
-                    var worker = Connection.Client.DeleteAsync(endpoint);
-                    var response = worker.GetAwaiter().GetResult();
-                    worker.Wait();
+                var worker = Connection.Client.DeleteAsync(endpoint);
+                var response = worker.GetAwaiter().GetResult();
+                worker.Wait();
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        Console.WriteLine("True");
-                    }
-                    else
-                    {
-                        Console.WriteLine("False");
-                    }
-                }
-                catch (HttpRequestException e)
+                if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine("True");
                 }
-            }
-            catch (Exception e) // Catch anything else unexpected.
-            {
-                Console.WriteLine(e.Message);
-            }
+                else
+                {
+                    Console.WriteLine("False");
+                }
+            });
         }
 
-        private void WrapInTryCatch(Action sub)
+        private static void HttpTryCatch(Action requestLogic)
         {
             try
             {
                 try
                 {
-                    sub.Invoke();
+                    requestLogic.Invoke();
                 }
                 catch (HttpRequestException e)
                 {
                     Console.WriteLine(e.Message);
                 }
+                catch (Exception e) // Catch anything else unexpected.
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
-            catch (Exception e) // Catch anything else unexpected.
+            finally
             {
-                Console.WriteLine(e.Message);
+                requestLogic = null;
+                GC.Collect(); // Stops a memory leak caused by all the static methods...
             }
         }
     }

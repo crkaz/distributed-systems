@@ -7,7 +7,7 @@ namespace DistSysACWClient
     {
         public static void Get(string args)
         {
-            string endpoint = "User/New?username?" + args;
+            string endpoint = "User/New?username=" + args;
             GetEndpoint(endpoint);
         }
 

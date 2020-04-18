@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DistSysACWClient
 {
-    class TalkbackRequest : Request
+    class TalkBackRequest : Request
     {
         public static void Hello()
         {

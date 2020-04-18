@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Globalization;
 using System;
+using System.Text;
 
 namespace DistSysACW.Controllers
 {
@@ -140,18 +141,17 @@ namespace DistSysACW.Controllers
             {
                 try
                 {
-                    string msg = RSAService.Instance.Decrypt(encryptedInteger); // RSA decrypt to get original message.
-                    string keyStr = RSAService.Instance.Decrypt(encryptedSymKey); // RSA decrypt to get AES key.
-                    string ivStr = RSAService.Instance.Decrypt(encryptedIV); // RSA decrypt to get AES IV.
-                    byte[] key = HexStringToByteArr(keyStr); // Convert AES key string into byte array.
-                    byte[] iv = HexStringToByteArr(ivStr); // Convert AES IV string into byte array.
-                    int val = int.Parse(msg) + 50; // Add fifty to original value in message.
-                    byte[] valBytes = AESEncrypt(val.ToString(), key, iv); // Encrypt new value with passed AES key.
+                    byte[] intBytes = RSAService.Instance.Decrypt(encryptedInteger); // RSA decrypt to get original message.
+                    int msg = BitConverter.ToInt32(intBytes);
+                    byte[] keyBytes = RSAService.Instance.Decrypt(encryptedSymKey); // RSA decrypt to get AES key.
+                    byte[] ivBytes = RSAService.Instance.Decrypt(encryptedIV); // RSA decrypt to get AES IV.
+                    int val = msg + 50; // Add fifty to original value in message.
+                    byte[] valBytes = AESEncrypt(val.ToString(), keyBytes, ivBytes); // Encrypt new value with passed AES key.
                     string result = BitConverter.ToString(valBytes); // Convert new value into string to return.
 
                     return Ok(result);
                 }
-                catch
+                catch (Exception e)
                 {
                     return BadRequest("Bad Request"); // Doesn't specify a message.
                 }

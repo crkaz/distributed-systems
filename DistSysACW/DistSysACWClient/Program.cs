@@ -5,11 +5,11 @@ namespace DistSysACWClient
 {
     class Client
     {
-        const string TEST_HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
+        //const string TEST_HOST = "http://distsysacw.azurewebsites.net/1588873/api/";
 
         static void Main(string[] args)
         {
-            Connection.Init(TEST_HOST);
+            Connection.Init();
 
             // DELETE
             //
@@ -65,8 +65,8 @@ namespace DistSysACWClient
 
                         switch (cmd)
                         {
-                            case "Talkback Hello": TalkbackRequest.Hello(); break;
-                            case "Talkback Sort": TalkbackRequest.Sort(args); break;
+                            case "TalkBack Hello": TalkBackRequest.Hello(); break;
+                            case "TalkBack Sort": TalkBackRequest.Sort(args); break;
                             case "User Get": UserRequest.Get(args); break;
                             case "User Post": UserRequest.Post(args); break;
                             case "User Set": UserRequest.Set(args); break;
