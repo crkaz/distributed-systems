@@ -15,7 +15,7 @@ namespace DistSysACW.Controllers
         public UserController(UserContext context) : base(context) { }
 
 
-        [HttpGet] // Parses query obj to give raw string value.
+        [HttpGet]
         [ActionName("New")]
         public IActionResult Get([FromQuery] string username)
         {
