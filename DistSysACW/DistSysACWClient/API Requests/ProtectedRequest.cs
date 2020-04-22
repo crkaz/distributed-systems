@@ -12,7 +12,7 @@ namespace DistSysACWClient
 
             if (Connection.ApiKeySet())
             {
-                GetEndpoint(endpoint);
+                GetEndpoint(endpoint, null, "Unauthorized. Check ApiKey in Header is correct.");
             }
             else
             {
@@ -37,11 +37,11 @@ namespace DistSysACWClient
                 if (validArgs)
                 {
                     endpoint += args;
-                    GetEndpoint(endpoint);
+                    GetEndpoint(endpoint, null, "Unauthorized. Check ApiKey in Header is correct.");
                 }
                 else
                 {
-                    Console.WriteLine("Invalid arguments.");
+                    Console.WriteLine("Bad Request");
                 }
             }
             else
@@ -67,11 +67,11 @@ namespace DistSysACWClient
                 if (validArgs)
                 {
                     endpoint += args;
-                    GetEndpoint(endpoint);
+                    GetEndpoint(endpoint, null, "Unauthorized. Check ApiKey in Header is correct.");
                 }
                 else
                 {
-                    Console.WriteLine("Invalid arguments.");
+                    Console.WriteLine("Bad Request");
                 }
             }
             else
@@ -100,6 +100,12 @@ namespace DistSysACWClient
         public static void Sign(string args)
         {
             string endpoint = "Protected/Sign?message=" + args;
+
+            if (string.IsNullOrWhiteSpace(args))
+            {
+                Console.WriteLine("Invalid args.");
+                return;
+            }
 
             if (Connection.ApiKeySet())
             {

@@ -73,13 +73,9 @@ namespace DistSysACW.Models
         {
             try
             {
-                foreach (var user in ctx.Users)
-                {
-                    if (user.ApiKey == apiKey)
-                    {
-                        return true;
-                    }
-                }
+                User user = ctx.Users.Find(apiKey);
+                bool userExists = user != null;
+                return userExists;
             }
             catch (Exception e)
             {
@@ -116,13 +112,8 @@ namespace DistSysACW.Models
         {
             try
             {
-                foreach (var user in ctx.Users)
-                {
-                    if (user.ApiKey == apiKey)
-                    {
-                        return user;
-                    }
-                }
+                User user = ctx.Users.Find(apiKey);
+                return user;
             }
             catch (Exception e)
             {
@@ -193,18 +184,5 @@ namespace DistSysACW.Models
 
             return success;
         }
-
-        public static void Log(UserContext ctx, string apiKey, string logString)
-        {
-            #region MOVED INTO LOGGING MIDDLEWARE.
-            //DbAccessFacade.ModifyDb(() =>
-            //{
-            //    Log log = new Log(logString);
-            //    ctx.Users.Find(apiKey).Logs.Add(log);
-            //    ctx.SaveChanges();
-            //});
-            #endregion
-        }
-        ///.......
     }
 }

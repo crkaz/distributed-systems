@@ -11,14 +11,6 @@ namespace DistSysACWClient
         {
             Connection.Init();
 
-            // DELETE
-            //
-            Connection.ApiKey = "20a0a8e6-bfc8-4c35-8675-8db74e912358";
-            Connection.ApiKeySet();
-            ProtectedRequest.GetPublicKey();
-            //
-            //
-
             Console.WriteLine("Hello. What would you like to do?");
             while (true)
             {

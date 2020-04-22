@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DistSysACW.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20200401001942_db")]
+    [Migration("20200422104256_db")]
     partial class db
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

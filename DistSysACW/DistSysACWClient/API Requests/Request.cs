@@ -37,7 +37,14 @@ namespace DistSysACWClient
                 var worker = Connection.Client.GetStringAsync(endpoint);
                 var response = worker.GetAwaiter().GetResult();
                 worker.Wait();
-                Console.WriteLine(successResponse);
+                if (successResponse == null)
+                {
+                    Console.WriteLine(response);
+                }
+                else
+                {
+                    Console.WriteLine(successResponse);
+                }
                 return response;
             }
             catch (Exception e)

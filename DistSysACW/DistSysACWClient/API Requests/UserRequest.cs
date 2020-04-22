@@ -42,8 +42,8 @@ namespace DistSysACWClient
                     }
                     else
                     {
-                        //responseString = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine(response);
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(responseString);
                     }
                 }
                 Action<HttpResponseMessage> onResponse = new Action<HttpResponseMessage>(response => Response(response));
@@ -52,7 +52,7 @@ namespace DistSysACWClient
             }
             else
             {
-                Console.WriteLine("Invalid arguments.");
+                Console.WriteLine("Bad Request");
             }
         }
 

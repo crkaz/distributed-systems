@@ -41,7 +41,7 @@ namespace DistSysACWClient
             }
             catch
             {
-                Console.WriteLine("Invalid arguments.");
+                Console.WriteLine("Bad Request");
             }
         }
     }
